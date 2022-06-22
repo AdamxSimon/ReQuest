@@ -1,0 +1,12 @@
+.gridContainer {
+  width: 100%;
+  outline: 1px solid black;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid {
+  outline: 1px solid black;
+}
