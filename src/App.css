@@ -1,1 +1,21 @@
+.App {
+  height: 100%;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
+.gridContainer {
+  width: 100%;
+  outline: 1px solid black;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid {
+  outline: 1px solid black;
+}
