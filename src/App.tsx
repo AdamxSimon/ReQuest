@@ -1,12 +1,17 @@
-import "./App.css";
+// Custom Components
+
 import Grid from "./components/Grid/Grid";
 
-function App() {
+// Styles
+
+import "./App.css";
+
+const App = (): JSX.Element => {
   return (
     <div className="App">
       <Grid />
     </div>
   );
-}
+};
 
 export default App;
