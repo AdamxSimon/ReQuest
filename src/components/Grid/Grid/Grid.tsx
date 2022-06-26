@@ -1,26 +1,17 @@
 // React
 
 import { useRef, useState, useEffect } from "react";
-
-// Custom Hooks
-
-import useLoadImages from "../../../hooks/useLoadImages";
+import { LoadedImage } from "../../../hooks/useLoadImages";
 
 // Styles
 
 import classes from "./styles.module.css";
 
-const Grid = (): JSX.Element => {
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+interface GridProps {
+  images: LoadedImage[];
+}
 
-  const { imagesLoaded } = useLoadImages();
-
-  useEffect(() => {
-    if (imagesLoaded) {
-      setIsLoaded(true);
-    }
-  }, [imagesLoaded]);
-
+const Grid = (props: GridProps): JSX.Element => {
   const gridRef = useRef<HTMLCanvasElement | null>(null);
   const gridContextRef = useRef<CanvasRenderingContext2D | null>(null);
 
@@ -38,20 +29,16 @@ const Grid = (): JSX.Element => {
 
   return (
     <div className={classes.gridContainer}>
-      {isLoaded ? (
-        <canvas
-          className={classes.grid}
-          ref={gridRef}
-          height={height * tileSize}
-          width={width * tileSize}
-          style={{
-            height: height * tileSize * gridScale,
-            width: width * tileSize * gridScale,
-          }}
-        ></canvas>
-      ) : (
-        <div>Loading...</div>
-      )}
+      <canvas
+        className={classes.grid}
+        ref={gridRef}
+        height={height * tileSize}
+        width={width * tileSize}
+        style={{
+          height: height * tileSize * gridScale,
+          width: width * tileSize * gridScale,
+        }}
+      ></canvas>
     </div>
   );
 };

@@ -1,0 +1,14 @@
+.gridEditorContainer {
+  height: 100px;
+  width: 100%;
+  padding: 4px;
+  margin-bottom: 4px;
+  outline: 1px solid black;
+  display: flex;
+  align-items: center;
+}
+
+.spritePicker {
+  height: 64px;
+  outline: 1px solid black;
+}

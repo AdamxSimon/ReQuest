@@ -12,6 +12,11 @@ interface Image {
   src: string;
 }
 
+export interface LoadedImage {
+  id: string;
+  img: HTMLImageElement;
+}
+
 const images: Image[] = [
   { id: "grass", src: grass },
   { id: "person", src: person },
@@ -19,8 +24,11 @@ const images: Image[] = [
 
 const useLoadImages = () => {
   const [imagesLoaded, setImagesLoaded] = useState<boolean>(false);
+  const [loadedImages, setLoadedImages] = useState<LoadedImage[]>([]);
 
   useEffect(() => {
+    const loadedImagesCopy = [...loadedImages];
+
     const loadImage = (image: Image) => {
       return new Promise((resolve, reject) => {
         const loadingImage: HTMLImageElement = new Image();
@@ -30,6 +38,7 @@ const useLoadImages = () => {
           setTimeout(() => {
             resolve(loadingImage);
           }, 2000);
+          loadedImagesCopy.push({ id: image.id, img: loadingImage });
         };
 
         loadingImage.onerror = (err) => reject(err);
@@ -37,11 +46,14 @@ const useLoadImages = () => {
     };
 
     Promise.all(images.map((image) => loadImage(image)))
-      .then(() => setImagesLoaded(true))
+      .then(() => {
+        setImagesLoaded(true);
+        setLoadedImages(loadedImagesCopy);
+      })
       .catch((err) => console.log("Failed to load images", err));
   }, []);
 
-  return { imagesLoaded };
+  return { imagesLoaded, loadedImages };
 };
 
 export default useLoadImages;
