@@ -9,4 +9,5 @@
 
 .grid {
   outline: 1px solid black;
+  image-rendering: pixelated;
 }

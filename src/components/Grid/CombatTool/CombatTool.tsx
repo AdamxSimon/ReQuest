@@ -1,6 +1,6 @@
 // React
 
-import { useState, MouseEvent } from "react";
+import { useState } from "react";
 
 // Custom components
 
@@ -24,7 +24,7 @@ const CombatTool = (): JSX.Element => {
 
   const [selectedSprite, setSelectedSprite] = useState<HTMLImageElement>();
 
-  const selectSprite = (event: MouseEvent): void => {
+  const selectSprite = (event: any): void => {
     setSelectedSprite(loadedImages[Math.floor(event.clientX / 64)].img);
   };
 

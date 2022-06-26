@@ -1,7 +1,6 @@
 // React
 
 import { useRef, useState, useEffect } from "react";
-import { LoadedImage } from "../../../hooks/useLoadImages";
 
 // Styles
 
@@ -17,11 +16,24 @@ const Grid = (props: GridProps): JSX.Element => {
   const gridRef = useRef<HTMLCanvasElement | null>(null);
   const gridContextRef = useRef<CanvasRenderingContext2D | null>(null);
 
-  const [height, setHeight] = useState<number>(1);
-  const [width, setWidth] = useState<number>(1);
+  const [height, setHeight] = useState<number>(9);
+  const [width, setWidth] = useState<number>(12);
 
   const tileSize: number = 16;
   const gridScale: number = 4;
+
+  const drawSelectedSprite = (event: any): void => {
+    if (props.selectedSprite && gridRef.current && gridContextRef.current) {
+      const rectangle: DOMRect = gridRef.current.getBoundingClientRect();
+      const x: number = event.clientX - rectangle.left;
+      const y: number = event.clientY - rectangle.top;
+      gridContextRef.current.drawImage(
+        props.selectedSprite,
+        Math.floor(x / (tileSize * gridScale)) * tileSize,
+        Math.floor(y / (tileSize * gridScale)) * tileSize
+      );
+    }
+  };
 
   useEffect((): void => {
     if (gridRef.current) {
@@ -40,6 +52,7 @@ const Grid = (props: GridProps): JSX.Element => {
           height: height * tileSize * gridScale,
           width: width * tileSize * gridScale,
         }}
+        onClick={drawSelectedSprite}
       ></canvas>
     </div>
   );
