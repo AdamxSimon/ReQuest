@@ -9,6 +9,8 @@ import classes from "./styles.module.css";
 
 interface GridProps {
   images: LoadedImage[];
+  spriteSize: number;
+  tileSize: number;
 }
 
 const Grid = (props: GridProps): JSX.Element => {

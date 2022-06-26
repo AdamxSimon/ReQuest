@@ -11,4 +11,5 @@
 .spritePicker {
   height: 64px;
   outline: 1px solid black;
+  image-rendering: pixelated;
 }
