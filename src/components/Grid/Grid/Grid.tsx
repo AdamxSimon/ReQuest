@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 
 // Custom Hooks
 
-import useLoadImages from "../../hooks/useLoadImages";
+import useLoadImages from "../../../hooks/useLoadImages";
 
 // Styles
 
