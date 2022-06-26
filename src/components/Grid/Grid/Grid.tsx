@@ -8,9 +8,9 @@ import { LoadedImage } from "../../../hooks/useLoadImages";
 import classes from "./styles.module.css";
 
 interface GridProps {
-  images: LoadedImage[];
   spriteSize: number;
   tileSize: number;
+  selectedSprite: HTMLImageElement | undefined;
 }
 
 const Grid = (props: GridProps): JSX.Element => {

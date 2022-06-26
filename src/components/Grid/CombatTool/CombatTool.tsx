@@ -1,6 +1,6 @@
 // React
 
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 
 // Custom components
 
@@ -22,10 +22,24 @@ const CombatTool = (): JSX.Element => {
 
   const [tileSize, setTileSize] = useState<number>(16);
 
+  const [selectedSprite, setSelectedSprite] = useState<HTMLImageElement>();
+
+  const selectSprite = (event: MouseEvent): void => {
+    setSelectedSprite(loadedImages[Math.floor(event.clientX / 64)].img);
+  };
+
   return imagesLoaded ? (
     <div className={classes.toolContainer}>
-      <GridEditor images={loadedImages} spriteSize={spriteSize} />
-      <Grid images={loadedImages} spriteSize={spriteSize} tileSize={tileSize} />
+      <GridEditor
+        images={loadedImages}
+        spriteSize={spriteSize}
+        selectSprite={selectSprite}
+      />
+      <Grid
+        spriteSize={spriteSize}
+        tileSize={tileSize}
+        selectedSprite={selectedSprite}
+      />
     </div>
   ) : (
     <div>Loading...</div>

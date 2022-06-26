@@ -1,6 +1,6 @@
 // React
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, MouseEventHandler } from "react";
 
 // Interfaces
 
@@ -13,6 +13,7 @@ import classes from "./styles.module.css";
 interface GridEditorProps {
   images: LoadedImage[];
   spriteSize: number;
+  selectSprite: MouseEventHandler<HTMLCanvasElement>;
 }
 
 const GridEditor = (props: GridEditorProps): JSX.Element => {
@@ -43,6 +44,7 @@ const GridEditor = (props: GridEditorProps): JSX.Element => {
         ref={spritePickerRef}
         height={16}
         width={64}
+        onClick={props.selectSprite}
       ></canvas>
     </div>
   );
