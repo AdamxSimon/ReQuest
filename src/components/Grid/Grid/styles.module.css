@@ -15,4 +15,5 @@
 .grid {
   margin: auto;
   image-rendering: pixelated;
+  cursor: pointer;
 }

@@ -10,6 +10,7 @@ interface GridProps {
   spriteSize: number;
   tileSize: number;
   selectedSprite: HTMLImageElement | undefined;
+  inEraseMode: boolean;
 }
 
 const Grid = (props: GridProps): JSX.Element => {
@@ -23,15 +24,25 @@ const Grid = (props: GridProps): JSX.Element => {
   const gridScale: number = 4;
 
   const drawSelectedSprite = (event: any): void => {
-    if (props.selectedSprite && gridRef.current && gridContextRef.current) {
+    if (gridRef.current && gridContextRef.current) {
       const rectangle: DOMRect = gridRef.current.getBoundingClientRect();
       const x: number = event.clientX - rectangle.left;
       const y: number = event.clientY - rectangle.top;
-      gridContextRef.current.drawImage(
-        props.selectedSprite,
-        Math.floor(x / (tileSize * gridScale)) * tileSize,
-        Math.floor(y / (tileSize * gridScale)) * tileSize
-      );
+
+      if (props.inEraseMode) {
+        gridContextRef.current.clearRect(
+          Math.floor(x / (tileSize * gridScale)) * tileSize,
+          Math.floor(y / (tileSize * gridScale)) * tileSize,
+          tileSize,
+          tileSize
+        );
+      } else if (props.selectedSprite) {
+        gridContextRef.current.drawImage(
+          props.selectedSprite,
+          Math.floor(x / (tileSize * gridScale)) * tileSize,
+          Math.floor(y / (tileSize * gridScale)) * tileSize
+        );
+      }
     }
   };
 

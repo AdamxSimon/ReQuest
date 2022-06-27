@@ -14,6 +14,8 @@ interface GridEditorProps {
   images: LoadedImage[];
   spriteSize: number;
   selectSprite: MouseEventHandler<HTMLCanvasElement>;
+  inEraseMode: boolean;
+  toggleEraseMode: MouseEventHandler;
 }
 
 const GridEditor = (props: GridEditorProps): JSX.Element => {
@@ -48,6 +50,15 @@ const GridEditor = (props: GridEditorProps): JSX.Element => {
           onClick={props.selectSprite}
         ></canvas>
       </div>
+      {props.inEraseMode ? (
+        <div className={classes.button} onClick={props.toggleEraseMode}>
+          Exit Erase Mode
+        </div>
+      ) : (
+        <div className={classes.button} onClick={props.toggleEraseMode}>
+          Enter Erase Mode
+        </div>
+      )}
     </div>
   );
 };

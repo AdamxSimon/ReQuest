@@ -22,11 +22,19 @@ const CombatTool = (): JSX.Element => {
 
   const [tileSize, setTileSize] = useState<number>(16);
 
+  const [inEraseMode, setInEraseMode] = useState<boolean>(false);
   const [selectedSprite, setSelectedSprite] = useState<HTMLImageElement>();
 
+  const toggleEraseMode = (): void => {
+    setInEraseMode(!inEraseMode);
+  };
+
   const selectSprite = (event: any): void => {
+    if (inEraseMode) setInEraseMode(false);
     setSelectedSprite(loadedImages[Math.floor(event.clientX / 64)].img);
   };
+
+  console.log(inEraseMode);
 
   return imagesLoaded ? (
     <div className={classes.toolContainer}>
@@ -34,11 +42,14 @@ const CombatTool = (): JSX.Element => {
         images={loadedImages}
         spriteSize={spriteSize}
         selectSprite={selectSprite}
+        inEraseMode={inEraseMode}
+        toggleEraseMode={toggleEraseMode}
       />
       <Grid
         spriteSize={spriteSize}
         tileSize={tileSize}
         selectedSprite={selectedSprite}
+        inEraseMode={inEraseMode}
       />
     </div>
   ) : (
