@@ -1,15 +1,27 @@
 .gridEditorContainer {
   height: 100px;
   width: 100%;
-  padding: 4px;
-  margin-bottom: 4px;
-  outline: 1px solid black;
+  padding: 8px;
+  border-bottom: 2px solid black;
   display: flex;
   align-items: center;
 }
 
+.spritePickerContainer {
+  height: 64px;
+  width: 256px;
+  outline: 2px solid black;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.spritePickerContainer::-webkit-scrollbar {
+  display: none;
+}
+
 .spritePicker {
   height: 64px;
-  outline: 1px solid black;
   image-rendering: pixelated;
 }

@@ -39,13 +39,15 @@ const GridEditor = (props: GridEditorProps): JSX.Element => {
 
   return (
     <div className={classes.gridEditorContainer}>
-      <canvas
-        className={classes.spritePicker}
-        ref={spritePickerRef}
-        height={16}
-        width={64}
-        onClick={props.selectSprite}
-      ></canvas>
+      <div className={classes.spritePickerContainer}>
+        <canvas
+          className={classes.spritePicker}
+          ref={spritePickerRef}
+          height={16}
+          width={64}
+          onClick={props.selectSprite}
+        ></canvas>
+      </div>
     </div>
   );
 };
