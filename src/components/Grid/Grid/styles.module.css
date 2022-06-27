@@ -3,11 +3,17 @@
   outline: 1px solid black;
   flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.gridContainer::-webkit-scrollbar {
+  display: none;
 }
 
 .grid {
   outline: 1px solid black;
+  margin: auto;
   image-rendering: pixelated;
 }

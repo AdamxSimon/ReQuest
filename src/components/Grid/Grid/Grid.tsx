@@ -16,8 +16,8 @@ const Grid = (props: GridProps): JSX.Element => {
   const gridRef = useRef<HTMLCanvasElement | null>(null);
   const gridContextRef = useRef<CanvasRenderingContext2D | null>(null);
 
-  const [height, setHeight] = useState<number>(9);
-  const [width, setWidth] = useState<number>(12);
+  const [height, setHeight] = useState<number>(20);
+  const [width, setWidth] = useState<number>(20);
 
   const tileSize: number = 16;
   const gridScale: number = 4;
