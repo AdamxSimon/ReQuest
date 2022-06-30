@@ -4,6 +4,7 @@
   padding: 8px;
   border-bottom: 2px solid black;
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -28,11 +29,9 @@
 }
 
 .button {
-  background-color: pink;
   padding: 8px;
   border: 2px solid black;
   border-radius: 24px;
-  margin: 16px;
   font-weight: bold;
   cursor: pointer;
 }
@@ -40,4 +39,19 @@
 .button:active {
   background-color: black;
   color: white;
+}
+
+.input {
+  width: 42px;
+  padding: 8px;
+  outline: none;
+  border: 2px solid black;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: bold;
+  cursor: text;
+}
+
+.gridSizeContainer {
+  display: flex;
 }

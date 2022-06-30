@@ -11,14 +11,14 @@ interface GridProps {
   tileSize: number;
   selectedSprite: HTMLImageElement | undefined;
   inEraseMode: boolean;
+  gridHeight: number;
+  setGridHeight: React.Dispatch<React.SetStateAction<number>>;
+  gridWidth: number;
 }
 
 const Grid = (props: GridProps): JSX.Element => {
   const gridRef = useRef<HTMLCanvasElement | null>(null);
   const gridContextRef = useRef<CanvasRenderingContext2D | null>(null);
-
-  const [height, setHeight] = useState<number>(20);
-  const [width, setWidth] = useState<number>(40);
 
   const tileSize: number = 16;
   const gridScale: number = 4;
@@ -57,11 +57,11 @@ const Grid = (props: GridProps): JSX.Element => {
       <canvas
         className={classes.grid}
         ref={gridRef}
-        height={height * tileSize}
-        width={width * tileSize}
+        height={props.gridHeight * tileSize}
+        width={props.gridWidth * tileSize}
         style={{
-          height: height * tileSize * gridScale,
-          width: width * tileSize * gridScale,
+          height: props.gridHeight * tileSize * gridScale,
+          width: props.gridWidth * tileSize * gridScale,
         }}
         onClick={drawSelectedSprite}
       ></canvas>

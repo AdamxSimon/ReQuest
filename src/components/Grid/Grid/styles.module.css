@@ -1,6 +1,7 @@
 .gridContainer {
   width: 100%;
   background-color: lightgray;
+  padding: 16px;
   flex: 1;
   display: flex;
   overflow: scroll;
@@ -13,6 +14,8 @@
 }
 
 .grid {
+  background-color: white;
+  border: 2px solid black;
   margin: auto;
   image-rendering: pixelated;
   cursor: pointer;
