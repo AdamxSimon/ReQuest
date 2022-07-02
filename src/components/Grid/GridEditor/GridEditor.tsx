@@ -1,6 +1,12 @@
 // React
 
-import { useRef, useEffect, MouseEventHandler } from "react";
+import React, {
+  useRef,
+  useEffect,
+  MouseEventHandler,
+  FormEvent,
+  ChangeEvent,
+} from "react";
 
 // Interfaces
 
@@ -39,7 +45,7 @@ const GridEditor = (props: GridEditorProps): JSX.Element => {
   };
 
   const setHeightHandler = (): void => {
-    if (gridHeightRef.current !== null) {
+    if (gridHeightRef.current?.value) {
       const newHeight: number = +gridHeightRef.current.value;
       props.setGridHeight(newHeight);
       gridHeightRef.current.value = "";
@@ -47,7 +53,7 @@ const GridEditor = (props: GridEditorProps): JSX.Element => {
   };
 
   const setWidthHandler = (): void => {
-    if (gridWidthRef.current !== null) {
+    if (gridWidthRef.current?.value) {
       const newWidth: number = +gridWidthRef.current.value;
       props.setGridWidth(newWidth);
       gridWidthRef.current.value = "";
@@ -61,6 +67,11 @@ const GridEditor = (props: GridEditorProps): JSX.Element => {
     }
   }, []);
 
+  const blockStrings = (event: ChangeEvent<HTMLInputElement>) => {
+    const result = event.target.value.replace(/\D/g, "");
+    event.target.value = result;
+  };
+
   return (
     <div className={classes.gridEditorContainer}>
       <div className={classes.spritePickerContainer}>
@@ -73,19 +84,11 @@ const GridEditor = (props: GridEditorProps): JSX.Element => {
         ></canvas>
       </div>
       {props.inEraseMode ? (
-        <div
-          className={classes.button}
-          style={{ backgroundColor: "pink" }}
-          onClick={props.toggleEraseMode}
-        >
+        <div className={classes.button} onClick={props.toggleEraseMode}>
           Exit Erase Mode
         </div>
       ) : (
-        <div
-          className={classes.button}
-          style={{ backgroundColor: "pink" }}
-          onClick={props.toggleEraseMode}
-        >
+        <div className={classes.button} onClick={props.toggleEraseMode}>
           Enter Erase Mode
         </div>
       )}
@@ -95,12 +98,9 @@ const GridEditor = (props: GridEditorProps): JSX.Element => {
           className={classes.input}
           style={{ marginRight: 8 }}
           placeholder={`${props.gridHeight}`}
+          onChange={blockStrings}
         ></input>
-        <div
-          className={classes.button}
-          style={{ backgroundColor: "lightgreen" }}
-          onClick={setHeightHandler}
-        >
+        <div className={classes.button} onClick={setHeightHandler}>
           Set Height
         </div>
       </div>
@@ -110,12 +110,9 @@ const GridEditor = (props: GridEditorProps): JSX.Element => {
           className={classes.input}
           style={{ marginRight: 8 }}
           placeholder={`${props.gridWidth}`}
+          onChange={blockStrings}
         ></input>
-        <div
-          className={classes.button}
-          style={{ backgroundColor: "lightgreen" }}
-          onClick={setWidthHandler}
-        >
+        <div className={classes.button} onClick={setWidthHandler}>
           Set Width
         </div>
       </div>
