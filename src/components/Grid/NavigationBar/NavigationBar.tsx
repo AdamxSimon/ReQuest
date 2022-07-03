@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 
+// Custom Components
+
+import NavigationTab from "../NavigationTab/NavigationTab";
+
 // Styles
 
 import classes from "./styles.module.css";
@@ -18,7 +22,12 @@ const NavigationBar = (): JSX.Element => {
 
   return (
     <div className={classes.navigationBarContainer} style={slidePosition}>
-      <div className={classes.navigationBar}></div>
+      <div className={classes.navigationBar}>
+        <NavigationTab label="Characters" />
+        <NavigationTab label="Enemies" />
+        <NavigationTab label="Items" />
+        <NavigationTab label="Combat" />
+      </div>
       <div className={classes.toggleButton} onClick={toggleHandler}>
         {arrow}
       </div>

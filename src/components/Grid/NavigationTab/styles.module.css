@@ -1,0 +1,15 @@
+.navigationTab {
+  height: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.navigationTab:hover {
+  background-color: white;
+  color: black;
+}
