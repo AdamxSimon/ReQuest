@@ -35,19 +35,31 @@ const NavigationBar = (props: NavigationBarProps): JSX.Element => {
       <div className={classes.navigationBar}>
         <NavigationTab
           label="Characters"
-          setCurrentTool={() => setCurrentTool(Tools.Characters)}
+          setCurrentTool={() => {
+            setCurrentTool(Tools.Characters);
+            setIsShowing(false);
+          }}
         />
         <NavigationTab
           label="Enemies"
-          setCurrentTool={() => setCurrentTool(Tools.Enemies)}
+          setCurrentTool={() => {
+            setCurrentTool(Tools.Enemies);
+            setIsShowing(false);
+          }}
         />
         <NavigationTab
           label="Items"
-          setCurrentTool={() => setCurrentTool(Tools.Items)}
+          setCurrentTool={() => {
+            setCurrentTool(Tools.Items);
+            setIsShowing(false);
+          }}
         />
         <NavigationTab
           label="Combat"
-          setCurrentTool={() => setCurrentTool(Tools.Combat)}
+          setCurrentTool={() => {
+            setCurrentTool(Tools.Combat);
+            setIsShowing(false);
+          }}
         />
       </div>
       <div className={classes.toggleButton} onClick={toggleHandler}>
