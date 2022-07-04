@@ -1,7 +1,7 @@
 // Custom Components
 
-import NavigationBar from "./components/Grid/NavigationBar/NavigationBar";
-import CombatTool from "./components/Grid/CombatTool/CombatTool";
+import NavigationBar from "./components/NavigationBar/NavigationBar";
+import CombatTool from "./components/CombatTool/CombatTool";
 
 // Styles
 

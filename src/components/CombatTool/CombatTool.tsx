@@ -9,7 +9,7 @@ import Grid from "../Grid/Grid";
 
 // Custom Hooks
 
-import useLoadImages from "../../../hooks/useLoadImages";
+import useLoadImages from "../../hooks/useLoadImages";
 
 // Styles
 
