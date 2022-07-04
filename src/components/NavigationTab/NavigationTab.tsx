@@ -4,12 +4,17 @@ import classes from "./styles.module.css";
 
 interface NavigationTabProps {
   label: string;
+  setCurrentTool: () => void;
 }
 
 const NavigationTab = (props: NavigationTabProps): JSX.Element => {
-  const { label } = props;
+  const { label, setCurrentTool } = props;
 
-  return <div className={classes.navigationTab}>{label}</div>;
+  return (
+    <div className={classes.navigationTab} onClick={setCurrentTool}>
+      {label}
+    </div>
+  );
 };
 
 export default NavigationTab;

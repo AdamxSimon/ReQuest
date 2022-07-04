@@ -1,19 +1,32 @@
+// React
+
+import { useState } from "react";
+
 // Custom Components
 
 import NavigationBar from "./components/NavigationBar/NavigationBar";
+import CharactersTool from "./components/CharactersTool/CharactersTool";
 import CombatTool from "./components/CombatTool/CombatTool";
 
 // Styles
 
 import "./App.css";
 
-const App = (): JSX.Element => {
+export enum Tools {
+  Characters,
+  Enemies,
+  Items,
+  Combat,
+}
+
+export const App = (): JSX.Element => {
+  const [currentTool, setCurrentTool] = useState<Tools>(Tools.Combat);
+
   return (
     <div className="App">
-      <NavigationBar />
-      <CombatTool />
+      <NavigationBar setCurrentTool={setCurrentTool} />
+      {currentTool === Tools.Characters && <CharactersTool />}
+      {currentTool === Tools.Combat && <CombatTool />}
     </div>
   );
 };
-
-export default App;

@@ -1,16 +1,26 @@
 // React
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 // Custom Components
 
 import NavigationTab from "../NavigationTab/NavigationTab";
 
+// Enums
+
+import { Tools } from "../../App";
+
 // Styles
 
 import classes from "./styles.module.css";
 
-const NavigationBar = (): JSX.Element => {
+interface NavigationBarProps {
+  setCurrentTool: Dispatch<SetStateAction<Tools>>;
+}
+
+const NavigationBar = (props: NavigationBarProps): JSX.Element => {
+  const { setCurrentTool } = props;
+
   const [isShowing, setIsShowing] = useState<boolean>(false);
 
   const toggleHandler = (): void => {
@@ -23,10 +33,22 @@ const NavigationBar = (): JSX.Element => {
   return (
     <div className={classes.navigationBarContainer} style={slidePosition}>
       <div className={classes.navigationBar}>
-        <NavigationTab label="Characters" />
-        <NavigationTab label="Enemies" />
-        <NavigationTab label="Items" />
-        <NavigationTab label="Combat" />
+        <NavigationTab
+          label="Characters"
+          setCurrentTool={() => setCurrentTool(Tools.Characters)}
+        />
+        <NavigationTab
+          label="Enemies"
+          setCurrentTool={() => setCurrentTool(Tools.Enemies)}
+        />
+        <NavigationTab
+          label="Items"
+          setCurrentTool={() => setCurrentTool(Tools.Items)}
+        />
+        <NavigationTab
+          label="Combat"
+          setCurrentTool={() => setCurrentTool(Tools.Combat)}
+        />
       </div>
       <div className={classes.toggleButton} onClick={toggleHandler}>
         {arrow}
