@@ -20,7 +20,7 @@ export enum Tools {
 }
 
 export const App = (): JSX.Element => {
-  const [currentTool, setCurrentTool] = useState<Tools>(Tools.Combat);
+  const [currentTool, setCurrentTool] = useState<Tools>(Tools.Characters);
 
   return (
     <div className="App">
