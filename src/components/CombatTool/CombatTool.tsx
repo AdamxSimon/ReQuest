@@ -60,7 +60,7 @@ const CombatTool = (): JSX.Element => {
       />
     </div>
   ) : (
-    <div>Loading...</div>
+    <img className={classes.loading} src={require("../../assets/swords.png")} />
   );
 };
 
