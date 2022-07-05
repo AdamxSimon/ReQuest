@@ -7,6 +7,8 @@
   border-radius: 8px;
   display: flex;
   flex-direction: column;
+  font-family: "Press Start 2P";
+  font-size: 10px;
   cursor: pointer;
   transition: all 0.5s;
 }
@@ -23,20 +25,37 @@
   align-items: center;
 }
 
-.info {
+.info,
+.attribute {
   flex: 1;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.label {
-  font-weight: bold;
-  text-decoration: underline;
+.infoImage {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: scale(3);
+  image-rendering: pixelated;
 }
 
-.value {
-  font-size: 24px;
+.infoValue {
+  height: 20px;
+  width: 48px;
+  background-color: white;
+  padding: 4px;
+  border: 2px solid black;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
 }
 
 .portrait {
@@ -71,8 +90,21 @@
 }
 
 .attributesContainer {
+  height: fit-content;
   width: 100%;
+  padding: 8px 0;
   display: flex;
+}
+
+.label {
+  margin-bottom: 8px;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.value {
+  font-size: 12px;
+  z-index: 1;
 }
 
 .skillsContainer {
@@ -85,4 +117,5 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
