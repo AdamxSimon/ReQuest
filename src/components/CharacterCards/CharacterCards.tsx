@@ -6,7 +6,7 @@ import CharacterCard from "../CharacterCard/CharacterCard";
 
 import classes from "./styles.module.css";
 
-const CharacterManagement = (): JSX.Element => {
+const CharacterCards = (): JSX.Element => {
   return (
     <>
       <div className={classes.cardContainer}>
@@ -29,4 +29,4 @@ const CharacterManagement = (): JSX.Element => {
   );
 };
 
-export default CharacterManagement;
+export default CharacterCards;
