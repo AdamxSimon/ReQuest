@@ -1,37 +1,34 @@
+// Interfaces
+
+import { Character } from "../../types/Character";
+
 // Styles
 
 import classes from "./styles.module.css";
-
 interface CharacterCardProps {
-  name: string;
-  health: number;
-  attack: number;
-  defense: number;
-  speed: number;
-  strength: number;
-  dexterity: number;
-  constitution: number;
-  intelligence: number;
-  wisdom: number;
-  charisma: number;
-  skills: string[];
+  character: Character;
+}
+
+enum AttributeLabels {
+  Strength = "STR",
+  Dexterity = "DEX",
+  Constitution = "CON",
+  Intelligence = "INT",
+  Wisdom = "WIS",
+  Charisma = "CHA",
 }
 
 const CharacterCard = (props: CharacterCardProps): JSX.Element => {
-  const {
-    name,
-    health,
-    attack,
-    defense,
-    speed,
-    strength,
-    dexterity,
-    constitution,
-    intelligence,
-    wisdom,
-    charisma,
-    skills,
-  } = props;
+  const { character } = props;
+
+  const attributesMap: [AttributeLabels, number][] = [
+    [AttributeLabels.Strength, character.attributes.strength],
+    [AttributeLabels.Dexterity, character.attributes.dexterity],
+    [AttributeLabels.Constitution, character.attributes.constitution],
+    [AttributeLabels.Intelligence, character.attributes.intelligence],
+    [AttributeLabels.Wisdom, character.attributes.wisdom],
+    [AttributeLabels.Charisma, character.attributes.charisma],
+  ];
 
   return (
     <div className={classes.characterCard}>
@@ -41,67 +38,52 @@ const CharacterCard = (props: CharacterCardProps): JSX.Element => {
             className={classes.infoImage}
             src={require("../../assets/heart.png")}
           />
-          <div className={classes.infoValue}>{health}</div>
+          <div className={classes.infoValue}>{character.health}</div>
         </div>
         <div className={classes.info}>
           <img
             className={classes.infoImage}
             src={require("../../assets/swords.png")}
           />
-          <div className={classes.infoValue}>{attack}</div>
+          <div className={classes.infoValue}>{character.attack}</div>
         </div>
         <div className={classes.portrait}>
           <img src={require("../../assets/person.png")} />
-          <div className={classes.nameContainer}>{name}</div>
+          <div className={classes.nameContainer}>{character.name}</div>
         </div>
         <div className={classes.info}>
           <img
             className={classes.infoImage}
             src={require("../../assets/shield.png")}
           />
-          <div className={classes.infoValue}>{defense}</div>
+          <div className={classes.infoValue}>{character.defense}</div>
         </div>
         <div className={classes.info}>
           <img
             className={classes.infoImage}
             src={require("../../assets/boots.png")}
           />
-          <div className={classes.infoValue}>{speed}</div>
+          <div className={classes.infoValue}>{character.speed}</div>
         </div>
       </div>
       <div className={classes.attributesContainer}>
-        <div className={classes.attribute}>
-          <div className={classes.label}>STR</div>
-          <div className={classes.value}>{strength}</div>
-        </div>
-        <div className={classes.attribute}>
-          <div className={classes.label}>DEX</div>
-          <div className={classes.value}>{dexterity}</div>
-        </div>
-        <div className={classes.attribute}>
-          <div className={classes.label}>CON</div>
-          <div className={classes.value}>{constitution}</div>
-        </div>
-        <div className={classes.attribute}>
-          <div className={classes.label}>INT</div>
-          <div className={classes.value}>{intelligence}</div>
-        </div>
-        <div className={classes.attribute}>
-          <div className={classes.label}>WIS</div>
-          <div className={classes.value}>{wisdom}</div>
-        </div>
-        <div className={classes.attribute}>
-          <div className={classes.label}>CHA</div>
-          <div className={classes.value}>{charisma}</div>
-        </div>
+        {attributesMap.map((attribute, index) => {
+          const [label, value] = attribute;
+          return (
+            <div key={index} className={classes.attribute}>
+              <div className={classes.label}>{label}</div>
+              <div>{value}</div>
+            </div>
+          );
+        })}
       </div>
       <div className={classes.skillsContainer}>
-        {skills.map((skill, index) => {
-          if (index !== skills.length - 1) {
-            return `${skill} - `;
-          } else {
-            return skill;
-          }
+        {character.skills.map((skill, index) => {
+          return (
+            <div key={index} className={classes.skill}>
+              {skill}
+            </div>
+          );
         })}
       </div>
     </div>

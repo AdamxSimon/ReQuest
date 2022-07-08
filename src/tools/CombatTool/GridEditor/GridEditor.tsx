@@ -10,7 +10,7 @@ import React, {
 
 // Interfaces
 
-import { LoadedImage } from "../../hooks/useLoadImages";
+import { LoadedImage } from "../../../hooks/useLoadImages";
 
 // Styles
 

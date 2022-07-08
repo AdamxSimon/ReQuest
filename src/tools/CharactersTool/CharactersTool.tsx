@@ -4,8 +4,8 @@ import { useState } from "react";
 
 // Custom Components
 
-import CharacterCards from "../CharacterCards/CharacterCards";
-import CharacterSheet from "../CharacterSheet/CharacterSheet";
+import CharacterCards from "./CharacterCards/CharacterCards";
+import CharacterSheet from "./CharacterSheet/CharacterSheet";
 
 // Styles
 

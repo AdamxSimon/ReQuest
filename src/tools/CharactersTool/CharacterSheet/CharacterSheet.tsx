@@ -1,6 +1,6 @@
 // Custom Components
 
-import TextInput from "../TextInput/TextInput";
+import TextInput from "../../../components/TextInput/TextInput";
 
 // Styles
 

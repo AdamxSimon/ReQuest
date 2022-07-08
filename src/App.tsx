@@ -5,8 +5,8 @@ import { useState } from "react";
 // Custom Components
 
 import NavigationBar from "./components/NavigationBar/NavigationBar";
-import CharactersTool from "./components/CharactersTool/CharactersTool";
-import CombatTool from "./components/CombatTool/CombatTool";
+import CharactersTool from "./tools/CharactersTool/CharactersTool";
+import CombatTool from "./tools/CombatTool/CombatTool";
 
 // Styles
 
