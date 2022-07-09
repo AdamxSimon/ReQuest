@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import CharacterCards from "./CharacterCards/CharacterCards";
 import CharacterSheet from "./CharacterSheet/CharacterSheet";
+import Button from "../../components/Button/Button";
 
 // Styles
 
@@ -16,30 +17,40 @@ export enum CharacterViews {
   Sheet,
 }
 
+enum ToolbarButtons {
+  Back = "Back",
+  NewCharacter = "New Character",
+}
+
 const CharactersTool = (): JSX.Element => {
   const [currentView, setCurrentView] = useState<CharacterViews>(
     CharacterViews.Cards
   );
 
+  const style = {
+    button: {
+      maxWidth: 148,
+      flex: 1,
+    },
+  };
+
   return (
     <div className={classes.toolContainer}>
       <div className={classes.toolbar}>
         {currentView !== CharacterViews.Cards && (
-          <div
-            className={classes.button}
+          <Button
+            text={ToolbarButtons.Back}
+            style={style.button}
             onClick={() => setCurrentView(CharacterViews.Cards)}
-          >
-            Back
-          </div>
+          />
         )}
-        <div
-          className={classes.button}
+        <Button
+          text={ToolbarButtons.NewCharacter}
+          style={style.button}
           onClick={() => {
             setCurrentView(CharacterViews.Sheet);
           }}
-        >
-          New Character
-        </div>
+        />
       </div>
       {currentView === CharacterViews.Cards && <CharacterCards />}
       {currentView === CharacterViews.Sheet && <CharacterSheet />}

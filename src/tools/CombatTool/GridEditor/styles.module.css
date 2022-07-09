@@ -4,8 +4,17 @@
   padding: 8px;
   border-bottom: 2px solid black;
   display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
   justify-content: space-between;
   align-items: center;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.gridEditorContainer::-webkit-scrollbar {
+  display: none;
 }
 
 .spritePickerContainer {

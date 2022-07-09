@@ -26,9 +26,9 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  cursor: pointer;
   color: white;
   z-index: 2;
+  cursor: pointer;
   transition: all 0.5s;
 }
 

@@ -4,9 +4,12 @@ import React, {
   useRef,
   useEffect,
   MouseEventHandler,
-  FormEvent,
   ChangeEvent,
 } from "react";
+
+// Custom Components
+
+import Button from "../../../components/Button/Button";
 
 // Interfaces
 
@@ -16,12 +19,19 @@ import { LoadedImage } from "../../../hooks/useLoadImages";
 
 import classes from "./styles.module.css";
 
+enum ToolbarButtons {
+  ExitEraseMode = "Exit Erase Mode",
+  EnterEraseMode = "Enter Erase Mode",
+  SetHeight = "Set Height",
+  SetWidth = "Set Width",
+}
+
 interface GridEditorProps {
   images: LoadedImage[];
   spriteSize: number;
   selectSprite: MouseEventHandler<HTMLCanvasElement>;
   inEraseMode: boolean;
-  toggleEraseMode: MouseEventHandler;
+  toggleEraseMode: () => void;
   gridHeight: number;
   setGridHeight: React.Dispatch<React.SetStateAction<number>>;
   gridWidth: number;
@@ -72,6 +82,14 @@ const GridEditor = (props: GridEditorProps): JSX.Element => {
     event.target.value = result;
   };
 
+  const style = {
+    button: {
+      width: 148,
+      maxWidth: 148,
+      flex: 1,
+    },
+  };
+
   return (
     <div className={classes.gridEditorContainer}>
       <div className={classes.spritePickerContainer}>
@@ -84,13 +102,17 @@ const GridEditor = (props: GridEditorProps): JSX.Element => {
         ></canvas>
       </div>
       {props.inEraseMode ? (
-        <div className={classes.button} onClick={props.toggleEraseMode}>
-          Exit Erase Mode
-        </div>
+        <Button
+          text={ToolbarButtons.ExitEraseMode}
+          style={style.button}
+          onClick={props.toggleEraseMode}
+        />
       ) : (
-        <div className={classes.button} onClick={props.toggleEraseMode}>
-          Enter Erase Mode
-        </div>
+        <Button
+          text={ToolbarButtons.EnterEraseMode}
+          style={style.button}
+          onClick={props.toggleEraseMode}
+        />
       )}
       <div className={classes.gridSizeContainer}>
         <input
@@ -100,9 +122,11 @@ const GridEditor = (props: GridEditorProps): JSX.Element => {
           placeholder={`${props.gridHeight}`}
           onChange={blockStrings}
         ></input>
-        <div className={classes.button} onClick={setHeightHandler}>
-          Set Height
-        </div>
+        <Button
+          text={ToolbarButtons.SetHeight}
+          style={style.button}
+          onClick={setHeightHandler}
+        />
       </div>
       <div className={classes.gridSizeContainer}>
         <input
@@ -112,9 +136,11 @@ const GridEditor = (props: GridEditorProps): JSX.Element => {
           placeholder={`${props.gridWidth}`}
           onChange={blockStrings}
         ></input>
-        <div className={classes.button} onClick={setWidthHandler}>
-          Set Width
-        </div>
+        <Button
+          text={ToolbarButtons.SetWidth}
+          style={style.button}
+          onClick={setWidthHandler}
+        />
       </div>
     </div>
   );

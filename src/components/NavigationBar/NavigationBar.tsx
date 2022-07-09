@@ -14,6 +14,13 @@ import { Tools } from "../../App";
 
 import classes from "./styles.module.css";
 
+enum NavigationTabLabels {
+  Characters = "Characters",
+  Enemies = "Enemies",
+  Items = "Items",
+  Combat = "Combat",
+}
+
 interface NavigationBarProps {
   setCurrentTool: Dispatch<SetStateAction<Tools>>;
 }
@@ -27,40 +34,36 @@ const NavigationBar = (props: NavigationBarProps): JSX.Element => {
     setIsShowing(!isShowing);
   };
 
-  const slidePosition: { top: number } = isShowing ? { top: 0 } : { top: -100 };
+  const navigationTabMap: [NavigationTabLabels, Tools][] = [
+    [NavigationTabLabels.Characters, Tools.Characters],
+    [NavigationTabLabels.Enemies, Tools.Enemies],
+    [NavigationTabLabels.Items, Tools.Items],
+    [NavigationTabLabels.Combat, Tools.Combat],
+  ];
+
   const arrow: string = isShowing ? "⮝" : "⮟";
 
+  const style = {
+    top: isShowing ? 0 : -100,
+    boxShadow: isShowing ? "0 2px 8px 4px gray" : "0 0 black",
+  };
+
   return (
-    <div className={classes.navigationBarContainer} style={slidePosition}>
+    <div className={classes.navigationBarContainer} style={style}>
       <div className={classes.navigationBar}>
-        <NavigationTab
-          label="Characters"
-          setCurrentTool={() => {
-            setCurrentTool(Tools.Characters);
-            setIsShowing(false);
-          }}
-        />
-        <NavigationTab
-          label="Enemies"
-          setCurrentTool={() => {
-            setCurrentTool(Tools.Enemies);
-            setIsShowing(false);
-          }}
-        />
-        <NavigationTab
-          label="Items"
-          setCurrentTool={() => {
-            setCurrentTool(Tools.Items);
-            setIsShowing(false);
-          }}
-        />
-        <NavigationTab
-          label="Combat"
-          setCurrentTool={() => {
-            setCurrentTool(Tools.Combat);
-            setIsShowing(false);
-          }}
-        />
+        {navigationTabMap.map((navigationTab, index) => {
+          const [label, tool] = navigationTab;
+          return (
+            <NavigationTab
+              key={index}
+              label={label}
+              setCurrentTool={() => {
+                setCurrentTool(tool);
+                setIsShowing(false);
+              }}
+            />
+          );
+        })}
       </div>
       <div className={classes.toggleButton} onClick={toggleHandler}>
         {arrow}

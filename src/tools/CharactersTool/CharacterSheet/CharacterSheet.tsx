@@ -25,7 +25,7 @@ const CharacterSheet = (): JSX.Element => {
           return (
             <TextInput
               key={index}
-              flex
+              style={{ flex: 1 }}
               placeholder={textField}
               onChange={(event) => {
                 localStorage.setItem(`${textField}`, event.target.value);
