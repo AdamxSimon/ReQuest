@@ -1,10 +1,16 @@
 // Custom Components
 
 import TextInput from "../../../components/TextInput/TextInput";
+import AttributeContainer from "../../../components/AttributeContainer/AttributeContainer";
 
 // Styles
 
 import classes from "./styles.module.css";
+
+enum Headers {
+  BasicInfo = "Basic Info",
+  Attributes = "Attributes",
+}
 
 enum TextFields {
   Name = "Name",
@@ -20,7 +26,8 @@ enum TextFields {
 const CharacterSheet = (): JSX.Element => {
   return (
     <div className={classes.characterSheet}>
-      <div className={classes.infoContainer}>
+      <div className={classes.header}>{Headers.BasicInfo}</div>
+      <div className={classes.section}>
         {Object.values(TextFields).map((textField, index) => {
           return (
             <TextInput
@@ -33,6 +40,12 @@ const CharacterSheet = (): JSX.Element => {
             ></TextInput>
           );
         })}
+      </div>
+      <div className={classes.header} style={{ marginTop: "16px" }}>
+        {Headers.Attributes}
+      </div>
+      <div className={classes.section}>
+        <AttributeContainer />
       </div>
     </div>
   );

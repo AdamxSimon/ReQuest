@@ -14,7 +14,14 @@
   display: none;
 }
 
-.infoContainer {
+.header {
+  width: 100%;
+  margin-bottom: 16px;
+  font-size: 32px;
+  text-align: center;
+}
+
+.section {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
