@@ -11,6 +11,7 @@ import CombatTool from "./tools/CombatTool/CombatTool";
 // Styles
 
 import "./App.css";
+import { CharactersProvider } from "./context/CharactersContext";
 
 export enum Tools {
   Characters,
@@ -23,10 +24,12 @@ export const App = (): JSX.Element => {
   const [currentTool, setCurrentTool] = useState<Tools>(Tools.Characters);
 
   return (
-    <div className="App">
-      <NavigationBar setCurrentTool={setCurrentTool} />
-      {currentTool === Tools.Characters && <CharactersTool />}
-      {currentTool === Tools.Combat && <CombatTool />}
-    </div>
+    <CharactersProvider>
+      <div className="App">
+        <NavigationBar setCurrentTool={setCurrentTool} />
+        {currentTool === Tools.Characters && <CharactersTool />}
+        {currentTool === Tools.Combat && <CombatTool />}
+      </div>
+    </CharactersProvider>
   );
 };

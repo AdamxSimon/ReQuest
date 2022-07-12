@@ -1,12 +1,20 @@
+// React
+
+import { useContext, useEffect, useState } from "react";
+
 // Custom Components
 
 import TextInput from "../../../components/TextInput/TextInput";
 import AttributeContainer from "../../../components/AttributeContainer/AttributeContainer";
 import SkillContainer from "../../../components/SkillContainer/SkillContainer";
 
+// Context
+
+import { CharactersContext } from "../../../context/CharactersContext";
+
 // Enums
 
-import { Skills } from "../../../types/Character";
+import { Character, Skills } from "../../../types/Character";
 
 // Styles
 
@@ -59,6 +67,39 @@ const skillsAttributesMap: [Skills, AttributesLabels][] = [
 ];
 
 const CharacterSheet = (): JSX.Element => {
+  const [character, setCharacter] = useState<Character>({
+    name: "",
+    level: "",
+    class: "",
+    race: "",
+    age: "",
+    background: "",
+    alignment: "",
+    experience: "",
+    health: 0,
+    attack: 0,
+    defense: 0,
+    speed: 0,
+    attributes: {
+      strength: 8,
+      dexterity: 8,
+      constitution: 8,
+      intelligence: 8,
+      wisdom: 8,
+      charisma: 8,
+    },
+    skills: [],
+  });
+
+  const { characters, setCharacters } = useContext(CharactersContext);
+
+  useEffect(() => {
+    return () => {
+      const copy = characters ? [...characters, character] : [character];
+      setCharacters(copy);
+    };
+  }, []);
+
   return (
     <div className={classes.characterSheet}>
       <div className={classes.header}>{Headers.BasicInfo}</div>
@@ -70,7 +111,10 @@ const CharacterSheet = (): JSX.Element => {
               style={{ flex: 1 }}
               placeholder={textField}
               onChange={(event) => {
-                localStorage.setItem(`${textField}`, event.target.value);
+                const value: string = event.target.value;
+                const copy: Character = { ...character };
+                copy[textField.toLowerCase()] = value;
+                setCharacter(copy);
               }}
             ></TextInput>
           );
@@ -90,7 +134,9 @@ const CharacterSheet = (): JSX.Element => {
       <div className={classes.section}>
         {skillsAttributesMap.map((data, index) => {
           const [skill, attribute] = data;
-          return <SkillContainer skill={skill} attribute={attribute} />;
+          return (
+            <SkillContainer key={index} skill={skill} attribute={attribute} />
+          );
         })}
       </div>
     </div>

@@ -13,6 +13,13 @@ import classes from "./styles.module.css";
 const CharacterCards = (): JSX.Element => {
   const exampleCharacter: Character = {
     name: "Jimmy",
+    level: "",
+    class: "",
+    race: "",
+    age: "",
+    background: "",
+    alignment: "",
+    experience: "",
     health: 10,
     attack: 10,
     defense: 10,

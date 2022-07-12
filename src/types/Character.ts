@@ -1,11 +1,19 @@
 export interface Character {
   name: string;
+  level: string;
+  class: string;
+  race: string;
+  age: string;
+  background: string;
+  alignment: string;
+  experience: string;
   health: number;
   attack: number;
   defense: number;
   speed: number;
   attributes: Attributes;
   skills: string[];
+  [key: string]: string | number | Attributes | string[];
 }
 
 export interface Attributes {
