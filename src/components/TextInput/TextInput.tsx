@@ -8,7 +8,7 @@ interface TextInputProps {
   onChange?: (event: any) => void;
 }
 
-const TextInput = (props: TextInputProps) => {
+const TextInput = (props: TextInputProps): JSX.Element => {
   const { style, placeholder, onChange } = props;
 
   return (
