@@ -98,7 +98,9 @@ const CharacterSheet = (): JSX.Element => {
       const copy = characters ? [...characters, character] : [character];
       setCharacters(copy);
     };
-  }, []);
+  }, [character]);
+
+  console.log(character);
 
   return (
     <div className={classes.characterSheet}>
