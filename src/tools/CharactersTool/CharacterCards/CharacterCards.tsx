@@ -1,44 +1,28 @@
+// React
+
+import { useContext } from "react";
+
+// Context
+
+import { CharactersContext } from "../../../context/CharactersContext";
+
 // Custom Components
 
 import CharacterCard from "../../../components/CharacterCard/CharacterCard";
-
-// Interfaces
-
-import { Character } from "../../../types/Character";
 
 // Styles
 
 import classes from "./styles.module.css";
 
 const CharacterCards = (): JSX.Element => {
-  const exampleCharacter: Character = {
-    name: "Jimmy",
-    level: "",
-    class: "",
-    race: "",
-    age: "",
-    background: "",
-    alignment: "",
-    experience: "",
-    health: 10,
-    attack: 10,
-    defense: 10,
-    speed: 10,
-    attributes: {
-      strength: 10,
-      dexterity: 10,
-      constitution: 10,
-      intelligence: 10,
-      wisdom: 10,
-      charisma: 10,
-    },
-    skills: ["Athletics", "Stealth"],
-  };
+  const { characters } = useContext(CharactersContext);
 
   return (
     <>
       <div className={classes.cardContainer}>
-        <CharacterCard character={exampleCharacter} />
+        {characters?.map((character, index) => {
+          return <CharacterCard key={index} character={character} />;
+        })}
       </div>
     </>
   );

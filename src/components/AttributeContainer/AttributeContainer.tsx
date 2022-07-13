@@ -1,6 +1,6 @@
 // React
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Custom Components
 
@@ -9,17 +9,21 @@ import PointsButton, { Buttons } from "../PointsButton/PointsButton";
 // Styles
 
 import classes from "./styles.module.css";
-
 interface AttributeContainerProps {
   label: string;
+  updateCharacterAttributes: (key: string, value: number) => void;
 }
 
 const AttributeContainer = (props: AttributeContainerProps): JSX.Element => {
   const [points, setPoints] = useState<number>(0);
 
-  const { label } = props;
+  const { label, updateCharacterAttributes } = props;
 
   const modifier: number = Math.floor((points - 10) / 2);
+
+  useEffect(() => {
+    updateCharacterAttributes(label.toLowerCase(), points);
+  }, [points]);
 
   return (
     <div className={classes.attributesContainer}>

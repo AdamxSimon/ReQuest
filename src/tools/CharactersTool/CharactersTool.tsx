@@ -20,6 +20,7 @@ export enum CharacterViews {
 enum ToolbarButtons {
   Back = "Back",
   NewCharacter = "New Character",
+  Save = "Save",
 }
 
 const CharactersTool = (): JSX.Element => {
@@ -37,20 +38,23 @@ const CharactersTool = (): JSX.Element => {
   return (
     <div className={classes.toolContainer}>
       <div className={classes.toolbar}>
-        {currentView !== CharacterViews.Cards && (
+        {currentView === CharacterViews.Cards && (
+          <Button
+            text={ToolbarButtons.NewCharacter}
+            style={style.button}
+            onClick={() => {
+              setCurrentView(CharacterViews.Sheet);
+            }}
+          />
+        )}
+
+        {currentView === CharacterViews.Sheet && (
           <Button
             text={ToolbarButtons.Back}
             style={style.button}
             onClick={() => setCurrentView(CharacterViews.Cards)}
           />
         )}
-        <Button
-          text={ToolbarButtons.NewCharacter}
-          style={style.button}
-          onClick={() => {
-            setCurrentView(CharacterViews.Sheet);
-          }}
-        />
       </div>
       {currentView === CharacterViews.Cards && <CharacterCards />}
       {currentView === CharacterViews.Sheet && <CharacterSheet />}

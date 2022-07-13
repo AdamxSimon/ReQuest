@@ -12,8 +12,34 @@ export interface Character {
   defense: number;
   speed: number;
   attributes: Attributes;
-  skills: string[];
+  skills: Skills[];
   [key: string]: string | number | Attributes | string[];
+}
+
+export class Character {
+  constructor() {
+    this.name = "";
+    this.level = "";
+    this.class = "";
+    this.race = "";
+    this.age = "";
+    this.background = "";
+    this.alignment = "";
+    this.experience = "";
+    this.health = 0;
+    this.attack = 0;
+    this.defense = 0;
+    this.speed = 0;
+    this.attributes = {
+      strength: 0,
+      dexterity: 0,
+      constitution: 0,
+      intelligence: 0,
+      wisdom: 0,
+      charisma: 0,
+    };
+    this.skills = [];
+  }
 }
 
 export interface Attributes {
@@ -23,6 +49,7 @@ export interface Attributes {
   intelligence: number;
   wisdom: number;
   charisma: number;
+  [key: string]: number;
 }
 
 export enum Skills {

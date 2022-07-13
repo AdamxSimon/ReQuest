@@ -2,7 +2,7 @@
 
 import { createContext, useEffect, useState } from "react";
 
-// Interfaces
+// Import
 
 import { Character } from "../types/Character";
 
@@ -11,8 +11,8 @@ enum LocalStorageKeys {
 }
 
 interface CharactersContext {
-  characters?: [];
-  setCharacters?: any;
+  characters?: Character[];
+  setCharacters?: React.Dispatch<React.SetStateAction<Character[]>>;
 }
 
 export const CharactersContext = createContext<CharactersContext>({});
@@ -24,7 +24,7 @@ interface CharactersProviderProps {
 export const CharactersProvider = ({
   children,
 }: CharactersProviderProps): JSX.Element => {
-  const [characters, setCharacters] = useState<[]>([]);
+  const [characters, setCharacters] = useState<Character[]>([]);
 
   const value: CharactersContext = { characters, setCharacters };
 
@@ -41,7 +41,6 @@ export const CharactersProvider = ({
       LocalStorageKeys.Characters,
       JSON.stringify(characters)
     );
-    console.log(characters);
   }, [characters]);
 
   return (

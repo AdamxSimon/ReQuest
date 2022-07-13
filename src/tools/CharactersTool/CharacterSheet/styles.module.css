@@ -5,6 +5,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   overflow: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -16,7 +17,6 @@
 
 .header {
   width: 100%;
-  margin-bottom: 16px;
   font-size: 32px;
   font-weight: bold;
   text-align: center;
@@ -24,6 +24,7 @@
 
 .section {
   width: 100%;
+  margin: 24px 0;
   display: flex;
   flex-wrap: wrap;
   gap: 16px;

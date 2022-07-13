@@ -1,20 +1,25 @@
 // React
 
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 
 // Custom Components
 
 import TextInput from "../../../components/TextInput/TextInput";
 import AttributeContainer from "../../../components/AttributeContainer/AttributeContainer";
 import SkillContainer from "../../../components/SkillContainer/SkillContainer";
+import Button from "../../../components/Button/Button";
 
 // Context
 
 import { CharactersContext } from "../../../context/CharactersContext";
 
+// Interfaces
+
+import { Character } from "../../../types/Character";
+
 // Enums
 
-import { Character, Skills } from "../../../types/Character";
+import { Skills } from "../../../types/Character";
 
 // Styles
 
@@ -46,6 +51,10 @@ enum AttributesLabels {
   Charisma = "Charisma",
 }
 
+enum Buttons {
+  Save = "Save",
+}
+
 const skillsAttributesMap: [Skills, AttributesLabels][] = [
   [Skills.Acrobatics, AttributesLabels.Dexterity],
   [Skills.AnimalHandling, AttributesLabels.Wisdom],
@@ -67,40 +76,36 @@ const skillsAttributesMap: [Skills, AttributesLabels][] = [
 ];
 
 const CharacterSheet = (): JSX.Element => {
-  const [character, setCharacter] = useState<Character>({
-    name: "",
-    level: "",
-    class: "",
-    race: "",
-    age: "",
-    background: "",
-    alignment: "",
-    experience: "",
-    health: 0,
-    attack: 0,
-    defense: 0,
-    speed: 0,
-    attributes: {
-      strength: 8,
-      dexterity: 8,
-      constitution: 8,
-      intelligence: 8,
-      wisdom: 8,
-      charisma: 8,
-    },
-    skills: [],
-  });
+  const [character, setCharacter] = useState<Character>(new Character());
 
   const { characters, setCharacters } = useContext(CharactersContext);
 
-  useEffect(() => {
-    return () => {
-      const copy = characters ? [...characters, character] : [character];
-      setCharacters(copy);
-    };
-  }, [character]);
+  const updateCharacterText = (key: string, value: string): void => {
+    const copy: Character = { ...character };
+    copy[key] = value;
+    setCharacter(copy);
+  };
 
-  console.log(character);
+  const updateCharacterAttributes = (key: string, value: number): void => {
+    const copy: Character = { ...character };
+    copy.attributes[key] = value;
+    setCharacter(copy);
+  };
+
+  const updateCharacterSkills = (skill: Skills, proficient: boolean): void => {
+    const copy: Character = { ...character };
+    if (proficient && !copy.skills.includes(skill)) {
+      copy.skills.push(skill);
+    } else if (!proficient && copy.skills.includes(skill)) {
+      copy.skills.splice(copy.skills.indexOf(skill), 1);
+    }
+    setCharacter(copy);
+  };
+
+  const save = useCallback(() => {
+    const copy = characters ? [...characters, character] : [character];
+    if (setCharacters) setCharacters(copy);
+  }, [character]);
 
   return (
     <div className={classes.characterSheet}>
@@ -113,34 +118,42 @@ const CharacterSheet = (): JSX.Element => {
               style={{ flex: 1 }}
               placeholder={textField}
               onChange={(event) => {
-                const value: string = event.target.value;
-                const copy: Character = { ...character };
-                copy[textField.toLowerCase()] = value;
-                setCharacter(copy);
+                updateCharacterText(
+                  textField.toLowerCase(),
+                  event.target.value
+                );
               }}
             ></TextInput>
           );
         })}
       </div>
-      <div className={classes.header} style={{ marginTop: "16px" }}>
-        {Headers.Attributes}
-      </div>
+      <div className={classes.header}>{Headers.Attributes}</div>
       <div className={classes.section}>
         {Object.values(AttributesLabels).map((label, index) => {
-          return <AttributeContainer key={index} label={label} />;
+          return (
+            <AttributeContainer
+              key={index}
+              label={label}
+              updateCharacterAttributes={updateCharacterAttributes}
+            />
+          );
         })}
       </div>
-      <div className={classes.header} style={{ marginTop: "16px" }}>
-        {Headers.Skills}
-      </div>
+      <div className={classes.header}>{Headers.Skills}</div>
       <div className={classes.section}>
         {skillsAttributesMap.map((data, index) => {
           const [skill, attribute] = data;
           return (
-            <SkillContainer key={index} skill={skill} attribute={attribute} />
+            <SkillContainer
+              key={index}
+              skill={skill}
+              attribute={attribute}
+              updateCharacterSkills={updateCharacterSkills}
+            />
           );
         })}
       </div>
+      <Button text={Buttons.Save} style={{ width: 124 }} onClick={save} />
     </div>
   );
 };

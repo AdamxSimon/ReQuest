@@ -1,24 +1,29 @@
 // React
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+// Enums
+
+import { Skills } from "../../types/Character";
 
 // Styles
 
 import classes from "./styles.module.css";
 
 interface SkillContainerProps {
-  skill: string;
+  skill: Skills;
   attribute: string;
+  updateCharacterSkills: (skill: Skills, proficient: boolean) => void;
 }
 
 const SkillContainer = (props: SkillContainerProps): JSX.Element => {
   const [proficient, setProficient] = useState<boolean>(false);
 
-  const { skill, attribute } = props;
+  const { skill, attribute, updateCharacterSkills } = props;
 
-  const proficiencyBonus = 2;
+  const proficiencyBonus: number = 2;
 
-  const modifier = proficient ? proficiencyBonus : 0;
+  const modifier: number = proficient ? proficiencyBonus : 0;
 
   const style = {
     backgroundColor: proficient ? "black" : "white",
@@ -28,6 +33,10 @@ const SkillContainer = (props: SkillContainerProps): JSX.Element => {
     transform: proficient ? "translate(-2px, -2px)" : "translate(0, 0)",
   };
 
+  useEffect(() => {
+    updateCharacterSkills(skill, proficient);
+  }, [proficient]);
+
   return (
     <div
       className={classes.skillContainer}
@@ -36,7 +45,9 @@ const SkillContainer = (props: SkillContainerProps): JSX.Element => {
     >
       <div className={classes.header}>{skill}</div>
       <div className={classes.pointsContainer}>
-        <div className={classes.modifier}>{modifier}</div>
+        <div className={classes.modifier}>
+          {modifier >= 0 ? `+${modifier}` : modifier}
+        </div>
       </div>
       <div className={classes.attribute}>{`(${attribute})`}</div>
     </div>
