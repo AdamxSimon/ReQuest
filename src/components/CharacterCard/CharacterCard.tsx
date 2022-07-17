@@ -2,11 +2,16 @@
 
 import { Character } from "../../types/Character";
 
+// Enums
+
+import { CharacterViews } from "../../tools/CharactersTool/CharactersTool";
+
 // Styles
 
 import classes from "./styles.module.css";
 interface CharacterCardProps {
   character: Character;
+  onClick: () => void;
 }
 
 enum AttributeLabels {
@@ -19,7 +24,7 @@ enum AttributeLabels {
 }
 
 const CharacterCard = (props: CharacterCardProps): JSX.Element => {
-  const { character } = props;
+  const { character, onClick } = props;
 
   const attributesMap: [AttributeLabels, number][] = [
     [AttributeLabels.Strength, character.attributes.strength],
@@ -31,7 +36,7 @@ const CharacterCard = (props: CharacterCardProps): JSX.Element => {
   ];
 
   return (
-    <div className={classes.characterCard}>
+    <div className={classes.characterCard} onClick={onClick}>
       <div className={classes.infoContainer}>
         <div className={classes.info}>
           <img

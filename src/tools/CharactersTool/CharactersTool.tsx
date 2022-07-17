@@ -1,6 +1,6 @@
 // React
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Custom Components
 
@@ -27,6 +27,7 @@ const CharactersTool = (): JSX.Element => {
   const [currentView, setCurrentView] = useState<CharacterViews>(
     CharacterViews.Cards
   );
+  const [characterIndex, setCharacterIndex] = useState<number | undefined>();
 
   const style = {
     button: {
@@ -34,6 +35,14 @@ const CharactersTool = (): JSX.Element => {
       flex: 1,
     },
   };
+
+  useEffect(() => {
+    if (typeof characterIndex === "number" && characterIndex >= 0) {
+      setCurrentView(CharacterViews.Sheet);
+    } else {
+      setCurrentView(CharacterViews.Cards);
+    }
+  }, [characterIndex]);
 
   return (
     <div className={classes.toolContainer}>
@@ -56,8 +65,15 @@ const CharactersTool = (): JSX.Element => {
           />
         )}
       </div>
-      {currentView === CharacterViews.Cards && <CharacterCards />}
-      {currentView === CharacterViews.Sheet && <CharacterSheet />}
+      {currentView === CharacterViews.Cards && (
+        <CharacterCards setCharacterIndex={setCharacterIndex} />
+      )}
+      {currentView === CharacterViews.Sheet && (
+        <CharacterSheet
+          characterIndex={characterIndex}
+          setCharacterIndex={setCharacterIndex}
+        />
+      )}
     </div>
   );
 };

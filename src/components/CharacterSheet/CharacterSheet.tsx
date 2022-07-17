@@ -1,6 +1,6 @@
 // React
 
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 // Custom Components
 
@@ -55,6 +55,11 @@ enum Buttons {
   Save = "Save",
 }
 
+interface CharacterSheetProps {
+  characterIndex?: number;
+  setCharacterIndex?: React.Dispatch<React.SetStateAction<number | undefined>>;
+}
+
 const skillsAttributesMap: [Skills, AttributesLabels][] = [
   [Skills.Acrobatics, AttributesLabels.Dexterity],
   [Skills.AnimalHandling, AttributesLabels.Wisdom],
@@ -75,10 +80,17 @@ const skillsAttributesMap: [Skills, AttributesLabels][] = [
   [Skills.Survival, AttributesLabels.Wisdom],
 ];
 
-const CharacterSheet = (): JSX.Element => {
-  const [character, setCharacter] = useState<Character>(new Character());
+const CharacterSheet = (props: CharacterSheetProps): JSX.Element => {
+  const { characterIndex, setCharacterIndex } = props;
 
   const { characters, setCharacters } = useContext(CharactersContext);
+
+  const initialCharacterState: Character =
+    typeof characterIndex === "number" && characterIndex >= 0
+      ? { ...characters[characterIndex] }
+      : new Character();
+
+  const [character, setCharacter] = useState<Character>(initialCharacterState);
 
   const updateCharacterText = (key: string, value: string): void => {
     const copy: Character = { ...character };
@@ -103,9 +115,27 @@ const CharacterSheet = (): JSX.Element => {
   };
 
   const save = useCallback(() => {
-    const copy = characters ? [...characters, character] : [character];
-    if (setCharacters) setCharacters(copy);
+    const charactersCopy = [...characters];
+
+    if (
+      typeof characterIndex === "number" &&
+      characterIndex >= 0 &&
+      setCharacterIndex
+    ) {
+      charactersCopy.splice(characterIndex, 1, character);
+      setCharacters(charactersCopy);
+    } else {
+      setCharacters([...charactersCopy, character]);
+    }
   }, [character]);
+
+  useEffect(() => {
+    if (setCharacterIndex) {
+      return () => {
+        setCharacterIndex(undefined);
+      };
+    }
+  }, []);
 
   return (
     <div className={classes.characterSheet}>
@@ -117,6 +147,7 @@ const CharacterSheet = (): JSX.Element => {
               key={index}
               style={{ flex: 1 }}
               placeholder={textField}
+              value={character[textField.toLowerCase()] as string}
               onChange={(event) => {
                 updateCharacterText(
                   textField.toLowerCase(),

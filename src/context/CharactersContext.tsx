@@ -10,12 +10,22 @@ enum LocalStorageKeys {
   Characters = "characters",
 }
 
-interface CharactersContext {
-  characters?: Character[];
-  setCharacters?: React.Dispatch<React.SetStateAction<Character[]>>;
+interface CharactersContextState {
+  characters: Character[];
+  setCharacters: React.Dispatch<React.SetStateAction<Character[]>>;
 }
 
-export const CharactersContext = createContext<CharactersContext>({});
+const characterSaveData: string | null = localStorage.getItem(
+  LocalStorageKeys.Characters
+);
+
+const initialCharactersState: Character[] = !!characterSaveData
+  ? JSON.parse(characterSaveData)
+  : [];
+
+export const CharactersContext = createContext<CharactersContextState>(
+  {} as CharactersContextState
+);
 
 interface CharactersProviderProps {
   children: JSX.Element;
@@ -24,17 +34,11 @@ interface CharactersProviderProps {
 export const CharactersProvider = ({
   children,
 }: CharactersProviderProps): JSX.Element => {
-  const [characters, setCharacters] = useState<Character[]>([]);
+  const [characters, setCharacters] = useState<Character[]>(
+    initialCharactersState
+  );
 
-  const value: CharactersContext = { characters, setCharacters };
-
-  useEffect(() => {
-    const data: string | null = localStorage.getItem(
-      LocalStorageKeys.Characters
-    );
-
-    if (data !== null) setCharacters(JSON.parse(data));
-  }, []);
+  const value: CharactersContextState = { characters, setCharacters };
 
   useEffect(() => {
     localStorage.setItem(

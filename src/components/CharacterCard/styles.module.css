@@ -77,16 +77,17 @@
 
 .nameContainer {
   height: 20px;
-  width: fit-content;
+  width: max-content;
   background-color: white;
   padding: 4px;
   border: 2px solid black;
   border-radius: 4px;
   position: absolute;
-  bottom: -12px;
+  bottom: -18px;
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 .attributesContainer {
