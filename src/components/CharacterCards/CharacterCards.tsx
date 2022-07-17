@@ -4,11 +4,11 @@ import { useContext } from "react";
 
 // Context
 
-import { CharactersContext } from "../../../context/CharactersContext";
+import { CharactersContext } from "../../context/CharactersContext";
 
 // Custom Components
 
-import CharacterCard from "../../../components/CharacterCard/CharacterCard";
+import CharacterCard from "../CharacterCard/CharacterCard";
 
 // Styles
 

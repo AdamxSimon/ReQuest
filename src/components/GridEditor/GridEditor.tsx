@@ -9,11 +9,11 @@ import React, {
 
 // Custom Components
 
-import Button from "../../../components/Button/Button";
+import Button from "../Button/Button";
 
 // Interfaces
 
-import { LoadedImage } from "../../../hooks/useLoadImages";
+import { LoadedImage } from "../../hooks/useLoadImages";
 
 // Styles
 

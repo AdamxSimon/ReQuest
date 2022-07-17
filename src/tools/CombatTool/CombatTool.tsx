@@ -4,8 +4,8 @@ import { useState } from "react";
 
 // Custom components
 
-import GridEditor from "./GridEditor/GridEditor";
-import Grid from "./Grid/Grid";
+import GridEditor from "../../components/GridEditor/GridEditor";
+import Grid from "../../components/Grid/Grid";
 
 // Custom Hooks
 

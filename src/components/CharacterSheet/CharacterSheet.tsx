@@ -4,22 +4,22 @@ import { useCallback, useContext, useState } from "react";
 
 // Custom Components
 
-import TextInput from "../../../components/TextInput/TextInput";
-import AttributeContainer from "../../../components/AttributeContainer/AttributeContainer";
-import SkillContainer from "../../../components/SkillContainer/SkillContainer";
-import Button from "../../../components/Button/Button";
+import TextInput from "../TextInput/TextInput";
+import AttributeContainer from "../AttributeContainer/AttributeContainer";
+import SkillContainer from "../SkillContainer/SkillContainer";
+import Button from "../Button/Button";
 
 // Context
 
-import { CharactersContext } from "../../../context/CharactersContext";
+import { CharactersContext } from "../../context/CharactersContext";
 
 // Interfaces
 
-import { Character } from "../../../types/Character";
+import { Character } from "../../types/Character";
 
 // Enums
 
-import { Skills } from "../../../types/Character";
+import { Skills } from "../../types/Character";
 
 // Styles
 
