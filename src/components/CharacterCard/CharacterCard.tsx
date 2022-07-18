@@ -2,10 +2,6 @@
 
 import { Character } from "../../types/Character";
 
-// Enums
-
-import { CharacterViews } from "../../tools/CharactersTool/CharactersTool";
-
 // Styles
 
 import classes from "./styles.module.css";

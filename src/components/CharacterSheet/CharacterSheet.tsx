@@ -1,6 +1,6 @@
 // React
 
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // Custom Components
 
@@ -12,6 +12,7 @@ import Button from "../Button/Button";
 // Context
 
 import { CharactersContext } from "../../context/CharactersContext";
+import { CharactersToolContext } from "../../context/CharactersToolContext";
 
 // Interfaces
 
@@ -55,11 +56,6 @@ enum Buttons {
   Save = "Save",
 }
 
-interface CharacterSheetProps {
-  characterIndex?: number;
-  setCharacterIndex?: React.Dispatch<React.SetStateAction<number | undefined>>;
-}
-
 const skillsAttributesMap: [Skills, AttributesLabels][] = [
   [Skills.Acrobatics, AttributesLabels.Dexterity],
   [Skills.AnimalHandling, AttributesLabels.Wisdom],
@@ -80,14 +76,15 @@ const skillsAttributesMap: [Skills, AttributesLabels][] = [
   [Skills.Survival, AttributesLabels.Wisdom],
 ];
 
-const CharacterSheet = (props: CharacterSheetProps): JSX.Element => {
-  const { characterIndex, setCharacterIndex } = props;
-
+const CharacterSheet = (): JSX.Element => {
+  const { selectedCharacterIndex, setSelectedCharacterIndex } = useContext(
+    CharactersToolContext
+  );
   const { characters, setCharacters } = useContext(CharactersContext);
 
   const initialCharacterState: Character =
-    typeof characterIndex === "number" && characterIndex >= 0
-      ? { ...characters[characterIndex] }
+    selectedCharacterIndex && selectedCharacterIndex >= 0
+      ? { ...characters[selectedCharacterIndex] }
       : new Character();
 
   const [character, setCharacter] = useState<Character>(initialCharacterState);
@@ -114,27 +111,10 @@ const CharacterSheet = (props: CharacterSheetProps): JSX.Element => {
     setCharacter(copy);
   };
 
-  const save = useCallback(() => {
-    const charactersCopy = [...characters];
-
-    if (
-      typeof characterIndex === "number" &&
-      characterIndex >= 0 &&
-      setCharacterIndex
-    ) {
-      charactersCopy.splice(characterIndex, 1, character);
-      setCharacters(charactersCopy);
-    } else {
-      setCharacters([...charactersCopy, character]);
-    }
-  }, [character]);
-
   useEffect(() => {
-    if (setCharacterIndex) {
-      return () => {
-        setCharacterIndex(undefined);
-      };
-    }
+    return () => {
+      setSelectedCharacterIndex(undefined);
+    };
   }, []);
 
   return (
@@ -188,7 +168,6 @@ const CharacterSheet = (props: CharacterSheetProps): JSX.Element => {
           );
         })}
       </div>
-      <Button text={Buttons.Save} style={{ width: 124 }} onClick={save} />
     </div>
   );
 };

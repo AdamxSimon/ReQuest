@@ -1,6 +1,11 @@
 // React
 
-import { useEffect, useState } from "react";
+import { useCallback, useContext } from "react";
+
+// Context
+
+import { CharactersToolContext } from "../../context/CharactersToolContext";
+import { CharactersContext } from "../../context/CharactersContext";
 
 // Custom Components
 
@@ -12,11 +17,6 @@ import Button from "../../components/Button/Button";
 
 import classes from "./styles.module.css";
 
-export enum CharacterViews {
-  Cards,
-  Sheet,
-}
-
 enum ToolbarButtons {
   Back = "Back",
   NewCharacter = "New Character",
@@ -24,56 +24,88 @@ enum ToolbarButtons {
 }
 
 const CharactersTool = (): JSX.Element => {
-  const [currentView, setCurrentView] = useState<CharacterViews>(
-    CharacterViews.Cards
-  );
-  const [characterIndex, setCharacterIndex] = useState<number | undefined>();
+  const {
+    isEditing,
+    setIsEditing,
+    selectedCharacter,
+    selectedCharacterIndex,
+    setSelectedCharacterIndex,
+  } = useContext(CharactersToolContext);
+  const { characters, setCharacters } = useContext(CharactersContext);
 
-  const style = {
+  const saveCharacter = useCallback(() => {
+    const charactersCopy = [...characters];
+
+    if (
+      selectedCharacterIndex &&
+      selectedCharacterIndex >= 0 &&
+      selectedCharacter
+    ) {
+      charactersCopy.splice(selectedCharacterIndex, 1, selectedCharacter);
+      setCharacters(charactersCopy);
+    } else {
+      if (selectedCharacter)
+        setCharacters([...charactersCopy, selectedCharacter]);
+    }
+
+    setSelectedCharacterIndex(undefined);
+  }, [
+    characters,
+    selectedCharacterIndex,
+    selectedCharacter,
+    setCharacters,
+    setSelectedCharacterIndex,
+  ]);
+
+  const styles = {
     button: {
       maxWidth: 148,
       flex: 1,
     },
   };
 
-  useEffect(() => {
-    if (typeof characterIndex === "number" && characterIndex >= 0) {
-      setCurrentView(CharacterViews.Sheet);
-    } else {
-      setCurrentView(CharacterViews.Cards);
-    }
-  }, [characterIndex]);
+  const toolbarButtons: JSX.Element[] = isEditing
+    ? [
+        <Button
+          key={0}
+          text={ToolbarButtons.Back}
+          style={styles.button}
+          onClick={
+            selectedCharacter
+              ? () => setSelectedCharacterIndex(undefined)
+              : () => setIsEditing(false)
+          }
+        />,
+        <Button
+          key={1}
+          text={ToolbarButtons.Save}
+          style={styles.button}
+          onClick={saveCharacter}
+        />,
+      ]
+    : [
+        <Button
+          key={0}
+          text={ToolbarButtons.NewCharacter}
+          style={styles.button}
+          onClick={() => {
+            setIsEditing(true);
+          }}
+        />,
+      ];
+
+  const currentView: JSX.Element = isEditing ? (
+    <CharacterSheet />
+  ) : (
+    <CharacterCards />
+  );
 
   return (
     <div className={classes.toolContainer}>
       <div className={classes.toolbar}>
-        {currentView === CharacterViews.Cards && (
-          <Button
-            text={ToolbarButtons.NewCharacter}
-            style={style.button}
-            onClick={() => {
-              setCurrentView(CharacterViews.Sheet);
-            }}
-          />
-        )}
-
-        {currentView === CharacterViews.Sheet && (
-          <Button
-            text={ToolbarButtons.Back}
-            style={style.button}
-            onClick={() => setCurrentView(CharacterViews.Cards)}
-          />
-        )}
+        {toolbarButtons.map((button) => button)}
       </div>
-      {currentView === CharacterViews.Cards && (
-        <CharacterCards setCharacterIndex={setCharacterIndex} />
-      )}
-      {currentView === CharacterViews.Sheet && (
-        <CharacterSheet
-          characterIndex={characterIndex}
-          setCharacterIndex={setCharacterIndex}
-        />
-      )}
+      {currentView}
     </div>
   );
 };

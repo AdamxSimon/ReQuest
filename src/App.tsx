@@ -12,6 +12,7 @@ import CombatTool from "./tools/CombatTool/CombatTool";
 
 import "./App.css";
 import { CharactersProvider } from "./context/CharactersContext";
+import { CharactersToolProvider } from "./context/CharactersToolContext";
 
 export enum Tools {
   Characters,
@@ -27,7 +28,11 @@ export const App = (): JSX.Element => {
     <CharactersProvider>
       <div className="App">
         <NavigationBar setCurrentTool={setCurrentTool} />
-        {currentTool === Tools.Characters && <CharactersTool />}
+        {currentTool === Tools.Characters && (
+          <CharactersToolProvider>
+            <CharactersTool />
+          </CharactersToolProvider>
+        )}
         {currentTool === Tools.Combat && <CombatTool />}
       </div>
     </CharactersProvider>
