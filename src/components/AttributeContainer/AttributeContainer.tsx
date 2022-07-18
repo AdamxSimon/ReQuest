@@ -11,13 +11,14 @@ import PointsButton, { Buttons } from "../PointsButton/PointsButton";
 import classes from "./styles.module.css";
 interface AttributeContainerProps {
   label: string;
+  initialPointsState?: number;
   updateCharacterAttributes: (key: string, value: number) => void;
 }
 
 const AttributeContainer = (props: AttributeContainerProps): JSX.Element => {
-  const [points, setPoints] = useState<number>(0);
+  const { label, initialPointsState, updateCharacterAttributes } = props;
 
-  const { label, updateCharacterAttributes } = props;
+  const [points, setPoints] = useState<number>(initialPointsState || 8);
 
   const modifier: number = Math.floor((points - 10) / 2);
 

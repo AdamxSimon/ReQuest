@@ -165,6 +165,9 @@ const CharacterSheet = (props: CharacterSheetProps): JSX.Element => {
             <AttributeContainer
               key={index}
               label={label}
+              initialPointsState={
+                character.attributes[label.toLowerCase()] as number
+              }
               updateCharacterAttributes={updateCharacterAttributes}
             />
           );
@@ -179,6 +182,7 @@ const CharacterSheet = (props: CharacterSheetProps): JSX.Element => {
               key={index}
               skill={skill}
               attribute={attribute}
+              initialProficientState={character.skills.includes(skill)}
               updateCharacterSkills={updateCharacterSkills}
             />
           );

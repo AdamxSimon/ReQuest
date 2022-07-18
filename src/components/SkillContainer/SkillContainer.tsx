@@ -13,13 +13,15 @@ import classes from "./styles.module.css";
 interface SkillContainerProps {
   skill: Skills;
   attribute: string;
+  initialProficientState: boolean;
   updateCharacterSkills: (skill: Skills, proficient: boolean) => void;
 }
 
 const SkillContainer = (props: SkillContainerProps): JSX.Element => {
-  const [proficient, setProficient] = useState<boolean>(false);
+  const { skill, attribute, initialProficientState, updateCharacterSkills } =
+    props;
 
-  const { skill, attribute, updateCharacterSkills } = props;
+  const [proficient, setProficient] = useState<boolean>(initialProficientState);
 
   const proficiencyBonus: number = 2;
 
