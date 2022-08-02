@@ -1,6 +1,6 @@
 // React
 
-import { useContext, useEffect, useState } from "react";
+import { useContext} from "react";
 
 // Custom Components
 
@@ -10,7 +10,6 @@ import SkillContainer from "../SkillContainer/SkillContainer";
 
 // Context
 
-import { CharactersContext } from "../../context/CharactersContext";
 import { CharactersToolContext } from "../../context/CharactersToolContext";
 
 // Interfaces
