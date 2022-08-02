@@ -1,20 +1,14 @@
 // React
 
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState } from "react";
 
 // Import
 
 import { Character } from "../types/Character";
-import { CharactersContext } from "./CharactersContext";
 
 interface CharactersToolContextState {
-  isEditing: boolean;
-  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedCharacter?: Character;
-  selectedCharacterIndex?: number;
-  setSelectedCharacterIndex: React.Dispatch<
-    React.SetStateAction<number | undefined>
-  >;
+  characterBeingEdited: Character | null
+  setCharacterBeingEdited:  React.Dispatch<React.SetStateAction<Character | null>>;
 }
 
 export const CharactersToolContext = createContext<CharactersToolContextState>(
@@ -28,29 +22,13 @@ interface CharactersProviderProps {
 export const CharactersToolProvider = ({
   children,
 }: CharactersProviderProps): JSX.Element => {
-  const { characters } = useContext(CharactersContext);
 
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-
-  const [selectedCharacterIndex, setSelectedCharacterIndex] = useState<
-    number | undefined
-  >();
-
-  const selectedCharacter: Character | undefined = selectedCharacterIndex
-    ? characters[selectedCharacterIndex]
-    : undefined;
+  const [characterBeingEdited, setCharacterBeingEdited] = useState<Character | null>(null);
 
   const value: CharactersToolContextState = {
-    isEditing,
-    setIsEditing,
-    selectedCharacter,
-    selectedCharacterIndex,
-    setSelectedCharacterIndex,
+    characterBeingEdited,
+    setCharacterBeingEdited
   };
-
-  useEffect(() => {
-    setIsEditing(!!selectedCharacter);
-  }, [selectedCharacter]);
 
   return (
     <CharactersToolContext.Provider value={value}>

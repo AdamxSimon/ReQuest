@@ -16,6 +16,7 @@ import Button from "../../components/Button/Button";
 // Styles
 
 import classes from "./styles.module.css";
+import { Character } from "../../types/Character";
 
 enum ToolbarButtons {
   Back = "Back",
@@ -25,36 +26,28 @@ enum ToolbarButtons {
 
 const CharactersTool = (): JSX.Element => {
   const {
-    isEditing,
-    setIsEditing,
-    selectedCharacter,
-    selectedCharacterIndex,
-    setSelectedCharacterIndex,
+    characterBeingEdited,
+    setCharacterBeingEdited
   } = useContext(CharactersToolContext);
   const { characters, setCharacters } = useContext(CharactersContext);
 
   const saveCharacter = useCallback(() => {
-    const charactersCopy = [...characters];
-
+    const charactersCopy = [...characters]
     if (
-      selectedCharacterIndex &&
-      selectedCharacterIndex >= 0 &&
-      selectedCharacter
+      characterBeingEdited && characterBeingEdited.id !== characters.length
     ) {
-      charactersCopy.splice(selectedCharacterIndex, 1, selectedCharacter);
+      charactersCopy.splice(characterBeingEdited.id, 1, characterBeingEdited);
       setCharacters(charactersCopy);
-    } else {
-      if (selectedCharacter)
-        setCharacters([...charactersCopy, selectedCharacter]);
+    } else if (characterBeingEdited) {
+        setCharacters([...characters, characterBeingEdited]);
     }
 
-    setSelectedCharacterIndex(undefined);
+    setCharacterBeingEdited(null);
   }, [
     characters,
-    selectedCharacterIndex,
-    selectedCharacter,
     setCharacters,
-    setSelectedCharacterIndex,
+    characterBeingEdited,
+    setCharacterBeingEdited
   ]);
 
   const styles = {
@@ -64,16 +57,15 @@ const CharactersTool = (): JSX.Element => {
     },
   };
 
-  const toolbarButtons: JSX.Element[] = isEditing
+  const toolbarButtons: JSX.Element[] = characterBeingEdited
     ? [
         <Button
           key={0}
           text={ToolbarButtons.Back}
           style={styles.button}
           onClick={
-            selectedCharacter
-              ? () => setSelectedCharacterIndex(undefined)
-              : () => setIsEditing(false)
+            () => setCharacterBeingEdited(null)
+              
           }
         />,
         <Button
@@ -89,12 +81,11 @@ const CharactersTool = (): JSX.Element => {
           text={ToolbarButtons.NewCharacter}
           style={styles.button}
           onClick={() => {
-            setIsEditing(true);
-          }}
+            setCharacterBeingEdited(new Character({id: characters.length}))}}
         />,
       ];
 
-  const currentView: JSX.Element = isEditing ? (
+  const currentView: JSX.Element = characterBeingEdited ? (
     <CharacterSheet />
   ) : (
     <CharacterCards />

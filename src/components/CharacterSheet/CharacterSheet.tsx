@@ -7,7 +7,6 @@ import { useContext, useEffect, useState } from "react";
 import TextInput from "../TextInput/TextInput";
 import AttributeContainer from "../AttributeContainer/AttributeContainer";
 import SkillContainer from "../SkillContainer/SkillContainer";
-import Button from "../Button/Button";
 
 // Context
 
@@ -52,10 +51,6 @@ enum AttributesLabels {
   Charisma = "Charisma",
 }
 
-enum Buttons {
-  Save = "Save",
-}
-
 const skillsAttributesMap: [Skills, AttributesLabels][] = [
   [Skills.Acrobatics, AttributesLabels.Dexterity],
   [Skills.AnimalHandling, AttributesLabels.Wisdom],
@@ -77,45 +72,33 @@ const skillsAttributesMap: [Skills, AttributesLabels][] = [
 ];
 
 const CharacterSheet = (): JSX.Element => {
-  const { selectedCharacterIndex, setSelectedCharacterIndex } = useContext(
+  const { characterBeingEdited, setCharacterBeingEdited} = useContext(
     CharactersToolContext
   );
-  const { characters, setCharacters } = useContext(CharactersContext);
 
-  const initialCharacterState: Character =
-    selectedCharacterIndex && selectedCharacterIndex >= 0
-      ? { ...characters[selectedCharacterIndex] }
-      : new Character();
-
-  const [character, setCharacter] = useState<Character>(initialCharacterState);
+  const character: Character = characterBeingEdited as Character
 
   const updateCharacterText = (key: string, value: string): void => {
-    const copy: Character = { ...character };
+    const copy: Character = { ...character }
     copy[key] = value;
-    setCharacter(copy);
+    setCharacterBeingEdited(copy);
   };
 
   const updateCharacterAttributes = (key: string, value: number): void => {
-    const copy: Character = { ...character };
+    const copy: Character = { ...character }
     copy.attributes[key] = value;
-    setCharacter(copy);
+    setCharacterBeingEdited(copy);
   };
 
   const updateCharacterSkills = (skill: Skills, proficient: boolean): void => {
-    const copy: Character = { ...character };
+    const copy: Character = { ...character }
     if (proficient && !copy.skills.includes(skill)) {
       copy.skills.push(skill);
     } else if (!proficient && copy.skills.includes(skill)) {
       copy.skills.splice(copy.skills.indexOf(skill), 1);
     }
-    setCharacter(copy);
+    setCharacterBeingEdited(copy);
   };
-
-  useEffect(() => {
-    return () => {
-      setSelectedCharacterIndex(undefined);
-    };
-  }, []);
 
   return (
     <div className={classes.characterSheet}>

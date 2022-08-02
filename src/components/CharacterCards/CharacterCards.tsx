@@ -16,7 +16,7 @@ import CharacterCard from "../CharacterCard/CharacterCard";
 import classes from "./styles.module.css";
 
 const CharacterCards = (): JSX.Element => {
-  const { setSelectedCharacterIndex } = useContext(CharactersToolContext);
+  const { setCharacterBeingEdited } = useContext(CharactersToolContext);
   const { characters } = useContext(CharactersContext);
 
   return (
@@ -26,7 +26,7 @@ const CharacterCards = (): JSX.Element => {
           <CharacterCard
             key={index}
             character={character}
-            onClick={() => setSelectedCharacterIndex(index)}
+            onClick={() => setCharacterBeingEdited(character)}
           />
         );
       })}

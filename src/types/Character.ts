@@ -1,4 +1,5 @@
 export interface Character {
+  id: number
   name: string;
   level: string;
   class: string;
@@ -17,7 +18,8 @@ export interface Character {
 }
 
 export class Character {
-  constructor() {
+  constructor(config: {id: number}) {
+    this.id = config.id
     this.name = "";
     this.level = "";
     this.class = "";
