@@ -1,6 +1,6 @@
 // React
 
-import { useContext} from "react";
+import { useContext, useRef, useState } from "react";
 
 // Custom Components
 
@@ -26,6 +26,7 @@ import classes from "./styles.module.css";
 
 enum Headers {
   BasicInfo = "Basic Info",
+  Proficiency = "Proficiency",
   Attributes = "Attributes",
   Skills = "Skills",
 }
@@ -71,26 +72,30 @@ const skillsAttributesMap: [Skills, AttributesLabels][] = [
 ];
 
 const CharacterSheet = (): JSX.Element => {
-  const { characterBeingEdited, setCharacterBeingEdited} = useContext(
+  const { characterBeingEdited, setCharacterBeingEdited } = useContext(
     CharactersToolContext
   );
 
-  const character: Character = characterBeingEdited as Character
+  const sliderRef = useRef<HTMLInputElement>(null);
+
+  const [proficiencyBonus, setProficiencyBonus] = useState<number>(0);
+
+  const character: Character = characterBeingEdited as Character;
 
   const updateCharacterText = (key: string, value: string): void => {
-    const copy: Character = { ...character }
+    const copy: Character = { ...character };
     copy[key] = value;
     setCharacterBeingEdited(copy);
   };
 
   const updateCharacterAttributes = (key: string, value: number): void => {
-    const copy: Character = { ...character }
+    const copy: Character = { ...character };
     copy.attributes[key] = value;
     setCharacterBeingEdited(copy);
   };
 
   const updateCharacterSkills = (skill: Skills, proficient: boolean): void => {
-    const copy: Character = { ...character }
+    const copy: Character = { ...character };
     if (proficient && !copy.skills.includes(skill)) {
       copy.skills.push(skill);
     } else if (!proficient && copy.skills.includes(skill)) {
@@ -119,6 +124,24 @@ const CharacterSheet = (): JSX.Element => {
             ></TextInput>
           );
         })}
+      </div>
+      <div className={classes.header}>{Headers.Proficiency}</div>
+      <div className={classes.section}>
+        <div style={{ width: "100%", textAlign: "center", fontWeight: "bold" }}>
+          {proficiencyBonus}
+        </div>
+        <input
+          ref={sliderRef}
+          type="range"
+          className={classes.slider}
+          onMouseUp={() => {
+            if (sliderRef.current) console.log(sliderRef.current.value);
+          }}
+          onInput={() => {
+            if (sliderRef.current)
+              setProficiencyBonus(+sliderRef.current.value);
+          }}
+        />
       </div>
       <div className={classes.header}>{Headers.Attributes}</div>
       <div className={classes.section}>
