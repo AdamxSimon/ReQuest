@@ -11,6 +11,19 @@
   cursor: pointer;
 }
 
+.disabled {
+  background-color: lightgray;
+  padding: 8px;
+  border: 2px solid black;
+  border-radius: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
+
 .button:active {
   background-color: black;
   color: white;

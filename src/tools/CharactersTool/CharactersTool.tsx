@@ -21,25 +21,23 @@ import { Character } from "../../types/Character";
 enum ToolbarButtons {
   Back = "Back",
   NewCharacter = "New Character",
+  Delete = "Delete",
   Save = "Save",
 }
 
 const CharactersTool = (): JSX.Element => {
-  const {
-    characterBeingEdited,
-    setCharacterBeingEdited
-  } = useContext(CharactersToolContext);
+  const { characterBeingEdited, setCharacterBeingEdited } = useContext(
+    CharactersToolContext
+  );
   const { characters, setCharacters } = useContext(CharactersContext);
 
   const saveCharacter = useCallback(() => {
-    const charactersCopy = [...characters]
-    if (
-      characterBeingEdited && characterBeingEdited.id !== characters.length
-    ) {
+    const charactersCopy = [...characters];
+    if (characterBeingEdited && characterBeingEdited.id !== characters.length) {
       charactersCopy.splice(characterBeingEdited.id, 1, characterBeingEdited);
       setCharacters(charactersCopy);
     } else if (characterBeingEdited) {
-        setCharacters([...characters, characterBeingEdited]);
+      setCharacters([...characters, characterBeingEdited]);
     }
 
     setCharacterBeingEdited(null);
@@ -47,7 +45,28 @@ const CharactersTool = (): JSX.Element => {
     characters,
     setCharacters,
     characterBeingEdited,
-    setCharacterBeingEdited
+    setCharacterBeingEdited,
+  ]);
+
+  const deleteCharacter = useCallback(() => {
+    if (characterBeingEdited) {
+      const newCharacterList = characters.filter(
+        (character) => character.id !== characterBeingEdited.id
+      );
+
+      newCharacterList.forEach((character, index) => {
+        character.id = index;
+      });
+
+      setCharacters(newCharacterList);
+    }
+
+    setCharacterBeingEdited(null);
+  }, [
+    characters,
+    setCharacters,
+    characterBeingEdited,
+    setCharacterBeingEdited,
   ]);
 
   const styles = {
@@ -60,16 +79,24 @@ const CharactersTool = (): JSX.Element => {
   const toolbarButtons: JSX.Element[] = characterBeingEdited
     ? [
         <Button
-          key={0}
+          key={ToolbarButtons.Back}
           text={ToolbarButtons.Back}
           style={styles.button}
-          onClick={
-            () => setCharacterBeingEdited(null)
-              
+          onClick={() => setCharacterBeingEdited(null)}
+        />,
+        <Button
+          key={ToolbarButtons.Delete}
+          text={ToolbarButtons.Delete}
+          style={styles.button}
+          onClick={deleteCharacter}
+          disabled={
+            !characters.some(
+              (character) => character.id === characterBeingEdited.id
+            )
           }
         />,
         <Button
-          key={1}
+          key={ToolbarButtons.Save}
           text={ToolbarButtons.Save}
           style={styles.button}
           onClick={saveCharacter}
@@ -77,11 +104,12 @@ const CharactersTool = (): JSX.Element => {
       ]
     : [
         <Button
-          key={0}
+          key={ToolbarButtons.NewCharacter}
           text={ToolbarButtons.NewCharacter}
           style={styles.button}
           onClick={() => {
-            setCharacterBeingEdited(new Character({id: characters.length}))}}
+            setCharacterBeingEdited(new Character({ id: characters.length }));
+          }}
         />,
       ];
 
