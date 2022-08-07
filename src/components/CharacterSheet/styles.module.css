@@ -33,4 +33,21 @@
 
 .slider {
   width: 100%;
+  appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 25px;
+  width: 25px;
+  background: pink;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  height: 25px;
+  width: 25px;
+  background: pink;
+  cursor: pointer;
 }

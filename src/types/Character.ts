@@ -1,5 +1,5 @@
 export interface Character {
-  id: number
+  id: number;
   name: string;
   level: string;
   class: string;
@@ -12,14 +12,15 @@ export interface Character {
   attack: number;
   defense: number;
   speed: number;
+  proficiencyBonus: number;
   attributes: Attributes;
   skills: Skills[];
   [key: string]: string | number | Attributes | string[];
 }
 
 export class Character {
-  constructor(config: {id: number}) {
-    this.id = config.id
+  constructor(config: { id: number }) {
+    this.id = config.id;
     this.name = "";
     this.level = "";
     this.class = "";
@@ -32,6 +33,7 @@ export class Character {
     this.attack = 0;
     this.defense = 0;
     this.speed = 0;
+    this.proficiencyBonus = 0;
     this.attributes = {
       strength: 0,
       dexterity: 0,

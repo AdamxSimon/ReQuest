@@ -6,6 +6,10 @@ import { useEffect, useState } from "react";
 
 import PointsButton, { Buttons } from "../PointsButton/PointsButton";
 
+// Utils
+
+import { getAttributeModifier } from "../../utils";
+
 // Styles
 
 import classes from "./styles.module.css";
@@ -20,7 +24,7 @@ const AttributeContainer = (props: AttributeContainerProps): JSX.Element => {
 
   const [points, setPoints] = useState<number>(initialPointsState || 8);
 
-  const modifier: number = Math.floor((points - 10) / 2);
+  const modifier: number = getAttributeModifier(points);
 
   useEffect(() => {
     updateCharacterAttributes(label.toLowerCase(), points);

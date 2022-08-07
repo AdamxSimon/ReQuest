@@ -128,18 +128,20 @@ const CharacterSheet = (): JSX.Element => {
       <div className={classes.header}>{Headers.Proficiency}</div>
       <div className={classes.section}>
         <div style={{ width: "100%", textAlign: "center", fontWeight: "bold" }}>
-          {proficiencyBonus}
+          {`+${character.proficiencyBonus}`}
         </div>
         <input
           ref={sliderRef}
           type="range"
           className={classes.slider}
-          onMouseUp={() => {
-            if (sliderRef.current) console.log(sliderRef.current.value);
-          }}
+          value={character.proficiencyBonus}
           onInput={() => {
-            if (sliderRef.current)
-              setProficiencyBonus(+sliderRef.current.value);
+            setCharacterBeingEdited({
+              ...character,
+              proficiencyBonus: sliderRef.current
+                ? +sliderRef.current.value
+                : 0,
+            });
           }}
         />
       </div>
@@ -169,6 +171,7 @@ const CharacterSheet = (): JSX.Element => {
               attribute={attribute}
               initialProficientState={character.skills.includes(skill)}
               updateCharacterSkills={updateCharacterSkills}
+              character={character}
             />
           );
         })}

@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 
 // Enums
 
-import { Skills } from "../../types/Character";
+import { Character, Skills } from "../../types/Character";
+import { getAttributeModifier } from "../../utils";
 
 // Styles
 
@@ -15,17 +16,24 @@ interface SkillContainerProps {
   attribute: string;
   initialProficientState: boolean;
   updateCharacterSkills: (skill: Skills, proficient: boolean) => void;
+  character: Character;
 }
 
 const SkillContainer = (props: SkillContainerProps): JSX.Element => {
-  const { skill, attribute, initialProficientState, updateCharacterSkills } =
-    props;
+  const {
+    skill,
+    attribute,
+    initialProficientState,
+    updateCharacterSkills,
+    character,
+  } = props;
 
   const [proficient, setProficient] = useState<boolean>(initialProficientState);
 
-  const proficiencyBonus: number = 2;
-
-  const modifier: number = proficient ? proficiencyBonus : 0;
+  const modifier: number = proficient
+    ? character.proficiencyBonus +
+      getAttributeModifier(character.attributes[attribute.toLowerCase()])
+    : getAttributeModifier(character.attributes[attribute.toLowerCase()]);
 
   const style = {
     backgroundColor: proficient ? "black" : "white",
