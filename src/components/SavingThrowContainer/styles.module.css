@@ -1,0 +1,24 @@
+.savingThrowContainer {
+  height: 120px;
+  width: 120px;
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.header {
+  text-align: center;
+  font-weight: bold;
+}
+
+.modifier {
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}

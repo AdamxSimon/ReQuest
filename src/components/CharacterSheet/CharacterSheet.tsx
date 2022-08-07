@@ -23,11 +23,13 @@ import { Skills } from "../../types/Character";
 // Styles
 
 import classes from "./styles.module.css";
+import SavingThrowContainer from "../SavingThrowContainer/SavingThrowContainer";
 
 enum Headers {
   BasicInfo = "Basic Info",
   Proficiency = "Proficiency",
   Attributes = "Attributes",
+  SavingThrows = "Saving Throws",
   Skills = "Skills",
 }
 
@@ -127,7 +129,14 @@ const CharacterSheet = (): JSX.Element => {
       </div>
       <div className={classes.header}>{Headers.Proficiency}</div>
       <div className={classes.section}>
-        <div style={{ width: "100%", textAlign: "center", fontWeight: "bold" }}>
+        <div
+          style={{
+            width: "100%",
+            textAlign: "center",
+            fontSize: 32,
+            fontWeight: "bold",
+          }}
+        >
           {`+${character.proficiencyBonus}`}
         </div>
         <input
@@ -156,6 +165,19 @@ const CharacterSheet = (): JSX.Element => {
                 character.attributes[label.toLowerCase()] as number
               }
               updateCharacterAttributes={updateCharacterAttributes}
+            />
+          );
+        })}
+      </div>
+      <div className={classes.header}>{Headers.SavingThrows}</div>
+      <div className={classes.section}>
+        {Object.values(AttributesLabels).map((attribute, index) => {
+          return (
+            <SavingThrowContainer
+              key={index}
+              attribute={attribute}
+              character={character}
+              setCharacterBeingEdited={setCharacterBeingEdited}
             />
           );
         })}

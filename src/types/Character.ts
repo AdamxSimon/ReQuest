@@ -14,8 +14,9 @@ export interface Character {
   speed: number;
   proficiencyBonus: number;
   attributes: Attributes;
+  savingThrows: SavingThrows;
   skills: Skills[];
-  [key: string]: string | number | Attributes | string[];
+  [key: string]: string | number | Attributes | SavingThrows | string[];
 }
 
 export class Character {
@@ -42,6 +43,14 @@ export class Character {
       wisdom: 0,
       charisma: 0,
     };
+    this.savingThrows = {
+      strength: false,
+      dexterity: false,
+      constitution: false,
+      intelligence: false,
+      wisdom: false,
+      charisma: false,
+    };
     this.skills = [];
   }
 }
@@ -54,6 +63,16 @@ export interface Attributes {
   wisdom: number;
   charisma: number;
   [key: string]: number;
+}
+
+export interface SavingThrows {
+  strength: boolean;
+  dexterity: boolean;
+  constitution: boolean;
+  intelligence: boolean;
+  wisdom: boolean;
+  charisma: boolean;
+  [key: string]: boolean;
 }
 
 export enum Skills {
