@@ -1,6 +1,6 @@
 // React
 
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 
 // Custom Components
 
@@ -81,6 +81,7 @@ const CharacterSheet = (): JSX.Element => {
 
   const sliderRef = useRef<HTMLInputElement>(null);
   const pictureInputRef = useRef<HTMLInputElement>(null);
+  const picturePreviewRef = useRef<HTMLImageElement>(null);
 
   const character: Character = characterBeingEdited as Character;
 
@@ -107,11 +108,34 @@ const CharacterSheet = (): JSX.Element => {
   };
 
   const handlePictureUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const copy: Character = { ...character };
-    const image = event.target?.files?.[0];
-    if (image) copy.image = URL.createObjectURL(image);
-    setCharacterBeingEdited(copy);
+    const file = event?.target?.files?.[0];
+    const fileReader = new FileReader();
+
+    fileReader.onload = () => {
+      if (picturePreviewRef.current)
+        picturePreviewRef.current.src = fileReader.result as string;
+
+      const image = getBase64Image(picturePreviewRef.current);
+      if (image) setCharacterBeingEdited({ ...character, image });
+    };
+
+    if (file) fileReader.readAsDataURL(file);
   };
+
+  function getBase64Image(image: HTMLImageElement | null) {
+    if (image) {
+      const canvas = document.createElement("canvas");
+      canvas.height = image.height;
+      canvas.width = image.width;
+
+      const ctx = canvas.getContext("2d");
+      ctx?.drawImage(image, 0, 0);
+
+      const dataURL = canvas.toDataURL("image/png");
+
+      return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    }
+  }
 
   return (
     <div className={classes.characterSheet}>
@@ -214,6 +238,7 @@ const CharacterSheet = (): JSX.Element => {
           onChange={handlePictureUpload}
         />
       </div>
+      <img ref={picturePreviewRef} />
     </div>
   );
 };

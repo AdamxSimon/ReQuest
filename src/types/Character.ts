@@ -17,7 +17,13 @@ export interface Character {
   savingThrows: SavingThrows;
   skills: Skills[];
   image: string;
-  [key: string]: string | number | Attributes | SavingThrows | string[];
+  [key: string]:
+    | string
+    | number
+    | Attributes
+    | SavingThrows
+    | string[]
+    | undefined;
 }
 
 export class Character {
