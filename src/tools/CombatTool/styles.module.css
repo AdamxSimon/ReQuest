@@ -6,18 +6,3 @@
   flex-direction: column;
   align-items: center;
 }
-
-.loading {
-  image-rendering: pixelated;
-  animation: loading linear 5s infinite;
-}
-
-@keyframes loading {
-  from {
-    transform: rotate(0deg) scale(3);
-  }
-
-  to {
-    transform: rotate(360deg) scale(3);
-  }
-}
