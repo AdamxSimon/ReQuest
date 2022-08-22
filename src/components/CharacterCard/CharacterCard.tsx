@@ -49,7 +49,7 @@ const CharacterCard = (props: CharacterCardProps): JSX.Element => {
           <div className={classes.infoValue}>{character.attack}</div>
         </div>
         <div className={classes.portrait}>
-          <img src={require("../../assets/person.png")} />
+          <img src={character.image} />
           <div className={classes.nameContainer}>{character.name}</div>
         </div>
         <div className={classes.info}>

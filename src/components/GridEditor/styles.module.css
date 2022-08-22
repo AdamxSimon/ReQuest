@@ -18,23 +18,35 @@
 }
 
 .spritePickerContainer {
-  height: 64px;
+  display: flex;
+  flex-direction: column;
+}
+
+.spritePickerToggler {
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spritePickerImages {
+  height: 54px;
   width: 256px;
   outline: 2px solid black;
+  margin: 0 8px;
   overflow-x: scroll;
   overflow-y: hidden;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-.spritePickerContainer::-webkit-scrollbar {
+.spritePickerImages::-webkit-scrollbar {
   display: none;
 }
 
-.spritePicker {
-  height: 64px;
-  image-rendering: pixelated;
-  cursor: pointer;
+.spritePickerCategory {
+  text-align: center;
+  font-weight: bold;
 }
 
 .button {

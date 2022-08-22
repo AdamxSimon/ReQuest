@@ -16,6 +16,7 @@ export interface Character {
   attributes: Attributes;
   savingThrows: SavingThrows;
   skills: Skills[];
+  image: string;
   [key: string]: string | number | Attributes | SavingThrows | string[];
 }
 
@@ -52,6 +53,7 @@ export class Character {
       charisma: false,
     };
     this.skills = [];
+    this.image = "";
   }
 }
 

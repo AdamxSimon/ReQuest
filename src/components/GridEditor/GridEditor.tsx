@@ -1,12 +1,16 @@
 // React
 
-import { useRef, ChangeEvent, useContext } from "react";
+import { useRef, ChangeEvent, useContext, useState } from "react";
 import { CombatToolContext } from "../../context/CombatToolContext";
-import { GameObjectContext } from "../../context/GameObjectContext";
+import {
+  GameObjectContext,
+  GameObjectTypes,
+} from "../../context/GameObjectContext";
 
 // Custom Components
 
 import Button from "../Button/Button";
+import PointsButton, { Buttons } from "../PointsButton/PointsButton";
 
 // Styles
 
@@ -25,31 +29,68 @@ const GridEditor = (): JSX.Element => {
   const { grid, setGrid, selectedObject, setSelectedObject } =
     useContext(CombatToolContext);
 
+  const [displayedObjects, setDisplayedObjects] = useState<GameObjectTypes>(
+    GameObjectTypes.Ground
+  );
+
+  const filteredGameObjects = gameObjects.filter(
+    (gameObject) => gameObject.type === displayedObjects
+  );
+
   const blockStrings = (event: ChangeEvent<HTMLInputElement>) => {
     const result = event.target.value.replace(/\D/g, "");
     event.target.value = result;
   };
 
-  console.log(selectedObject);
+  const changeDisplayedObjects = (type: Buttons) => {
+    const options: GameObjectTypes[] = Object.values(GameObjectTypes);
+
+    if (Buttons.Increment) {
+      if (options.indexOf(displayedObjects) === options.length - 1) {
+        setDisplayedObjects(options[0]);
+      } else {
+        setDisplayedObjects(options[options.indexOf(displayedObjects) + 1]);
+      }
+    } else if (Buttons.Decrement) {
+      if (options.indexOf(displayedObjects) === 0) {
+        setDisplayedObjects(options[options.length - 1]);
+      } else {
+        setDisplayedObjects(options[options.indexOf(displayedObjects) - 1]);
+      }
+    }
+  };
 
   return (
     <div className={classes.gridEditorContainer}>
       <div className={classes.spritePickerContainer}>
-        {gameObjects.map((gameObject) => {
-          return (
-            <img
-              key={gameObject.id}
-              src={gameObject.image}
-              alt={gameObject.image}
-              height={64}
-              width={64}
-              style={{ imageRendering: "pixelated", cursor: "pointer" }}
-              onClick={() => {
-                setSelectedObject(gameObject);
-              }}
-            />
-          );
-        })}
+        <div className={classes.spritePickerToggler}>
+          <PointsButton
+            type={Buttons.Decrement}
+            onClick={() => changeDisplayedObjects(Buttons.Decrement)}
+          />
+          <div className={classes.spritePickerImages}>
+            {filteredGameObjects.map((gameObject) => {
+              return (
+                <img
+                  key={gameObject.id}
+                  src={gameObject.image}
+                  alt={gameObject.image}
+                  height={54}
+                  width={54}
+                  style={{ imageRendering: "pixelated", cursor: "pointer" }}
+                  onClick={() => {
+                    setSelectedObject(gameObject);
+                  }}
+                />
+              );
+            })}
+          </div>
+          <PointsButton
+            type={Buttons.Increment}
+            onClick={() => changeDisplayedObjects(Buttons.Increment)}
+          />
+        </div>
+        <div className={classes.spritePickerCategory}>{displayedObjects}</div>
       </div>
       <div className={classes.gridSizeContainer}>
         <input

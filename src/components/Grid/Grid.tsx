@@ -1,6 +1,6 @@
 // React
 
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect } from "react";
 
 // Context
 
@@ -46,10 +46,6 @@ const Grid = (): JSX.Element => {
     );
     setGrid({ ...grid, tiles: initialTileMap });
   }, []);
-
-  const updateGridSize = useMemo(() => {
-    setGrid({ ...grid, tiles: generateTileMap(grid.height, grid.width) });
-  }, [grid.height, grid.width]);
 
   return (
     <div className={classes.gridContainer}>

@@ -4,9 +4,9 @@ import { createContext, useState } from "react";
 import { useDefaultObjects } from "../hooks/useDefaultObjects";
 
 export enum GameObjectTypes {
-  Ground,
-  Obstruction,
-  Character,
+  Ground = "Ground",
+  Obstruction = "Obstruction",
+  Character = "Character",
 }
 
 export interface GameObject {

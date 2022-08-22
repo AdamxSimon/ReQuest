@@ -31,6 +31,7 @@ enum Headers {
   Attributes = "Attributes",
   SavingThrows = "Saving Throws",
   Skills = "Skills",
+  Picture = "Picture",
 }
 
 enum TextFields {
@@ -79,8 +80,7 @@ const CharacterSheet = (): JSX.Element => {
   );
 
   const sliderRef = useRef<HTMLInputElement>(null);
-
-  const [proficiencyBonus, setProficiencyBonus] = useState<number>(0);
+  const pictureInputRef = useRef<HTMLInputElement>(null);
 
   const character: Character = characterBeingEdited as Character;
 
@@ -103,6 +103,13 @@ const CharacterSheet = (): JSX.Element => {
     } else if (!proficient && copy.skills.includes(skill)) {
       copy.skills.splice(copy.skills.indexOf(skill), 1);
     }
+    setCharacterBeingEdited(copy);
+  };
+
+  const handlePictureUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const copy: Character = { ...character };
+    const image = event.target?.files?.[0];
+    if (image) copy.image = URL.createObjectURL(image);
     setCharacterBeingEdited(copy);
   };
 
@@ -197,6 +204,15 @@ const CharacterSheet = (): JSX.Element => {
             />
           );
         })}
+      </div>
+      <div className={classes.header}>{Headers.Picture}</div>
+      <div className={classes.section}>
+        <input
+          ref={pictureInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handlePictureUpload}
+        />
       </div>
     </div>
   );
