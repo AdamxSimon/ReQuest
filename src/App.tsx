@@ -30,8 +30,8 @@ export const App = (): JSX.Element => {
   const [currentTool, setCurrentTool] = useState<Tools>(Tools.Characters);
 
   return (
-    <GameObjectProvider>
-      <CharactersProvider>
+    <CharactersProvider>
+      <GameObjectProvider>
         <div className="App">
           <NavigationBar setCurrentTool={setCurrentTool} />
           {currentTool === Tools.Characters && (
@@ -45,7 +45,7 @@ export const App = (): JSX.Element => {
             </CombatToolProvider>
           )}
         </div>
-      </CharactersProvider>
-    </GameObjectProvider>
+      </GameObjectProvider>
+    </CharactersProvider>
   );
 };

@@ -71,7 +71,6 @@
 }
 
 .portrait > img {
-  transform: scale(3);
   image-rendering: pixelated;
 }
 

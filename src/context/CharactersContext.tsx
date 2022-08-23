@@ -1,10 +1,11 @@
 // React
 
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 // Import
 
 import { Character } from "../types/Character";
+import { GameObjectContext } from "./GameObjectContext";
 
 enum LocalStorageKeys {
   Characters = "characters",
@@ -34,6 +35,8 @@ interface CharactersProviderProps {
 export const CharactersProvider = ({
   children,
 }: CharactersProviderProps): JSX.Element => {
+  const { gameObjects, setGameObjects } = useContext(GameObjectContext);
+
   const [characters, setCharacters] = useState<Character[]>(
     initialCharactersState
   );

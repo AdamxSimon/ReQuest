@@ -81,7 +81,6 @@ const CharacterSheet = (): JSX.Element => {
 
   const sliderRef = useRef<HTMLInputElement>(null);
   const pictureInputRef = useRef<HTMLInputElement>(null);
-  const picturePreviewRef = useRef<HTMLImageElement>(null);
 
   const character: Character = characterBeingEdited as Character;
 
@@ -112,30 +111,14 @@ const CharacterSheet = (): JSX.Element => {
     const fileReader = new FileReader();
 
     fileReader.onload = () => {
-      if (picturePreviewRef.current)
-        picturePreviewRef.current.src = fileReader.result as string;
-
-      const image = getBase64Image(picturePreviewRef.current);
-      if (image) setCharacterBeingEdited({ ...character, image });
+      setCharacterBeingEdited({
+        ...character,
+        image: fileReader.result as string,
+      });
     };
 
     if (file) fileReader.readAsDataURL(file);
   };
-
-  function getBase64Image(image: HTMLImageElement | null) {
-    if (image) {
-      const canvas = document.createElement("canvas");
-      canvas.height = image.height;
-      canvas.width = image.width;
-
-      const ctx = canvas.getContext("2d");
-      ctx?.drawImage(image, 0, 0);
-
-      const dataURL = canvas.toDataURL("image/png");
-
-      return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-    }
-  }
 
   return (
     <div className={classes.characterSheet}>
@@ -230,15 +213,29 @@ const CharacterSheet = (): JSX.Element => {
         })}
       </div>
       <div className={classes.header}>{Headers.Picture}</div>
-      <div className={classes.section}>
+      <div
+        className={classes.section}
+        style={{ justifyContent: "center", alignItems: "center" }}
+      >
+        <label htmlFor="picture-input" style={{ cursor: "pointer" }}>
+          {character.image ? "Change" : "Upload"}
+        </label>
         <input
           ref={pictureInputRef}
+          className={classes.pictureInput}
+          id="picture-input"
           type="file"
           accept="image/*"
           onChange={handlePictureUpload}
         />
+        <img
+          className={classes.picturePreview}
+          src={character.image}
+          height={64}
+          width={64}
+          style={!character.image ? { display: "none" } : undefined}
+        />
       </div>
-      <img ref={picturePreviewRef} />
     </div>
   );
 };

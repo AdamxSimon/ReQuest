@@ -45,13 +45,13 @@ const GridEditor = (): JSX.Element => {
   const changeDisplayedObjects = (type: Buttons) => {
     const options: GameObjectTypes[] = Object.values(GameObjectTypes);
 
-    if (Buttons.Increment) {
+    if (type === Buttons.Increment) {
       if (options.indexOf(displayedObjects) === options.length - 1) {
         setDisplayedObjects(options[0]);
       } else {
         setDisplayedObjects(options[options.indexOf(displayedObjects) + 1]);
       }
-    } else if (Buttons.Decrement) {
+    } else if (type === Buttons.Decrement) {
       if (options.indexOf(displayedObjects) === 0) {
         setDisplayedObjects(options[options.length - 1]);
       } else {

@@ -51,3 +51,28 @@
   background: pink;
   cursor: pointer;
 }
+
+label {
+  height: fit-content;
+  background-color: pink;
+  padding: 8px;
+  border: 2px solid black;
+  border-radius: 24px;
+}
+
+label:active {
+  background-color: black;
+  color: white;
+}
+
+.pictureInput {
+  display: none;
+}
+
+.picturePreview {
+  height: 64px;
+  width: 64px;
+  background-color: white;
+  outline: 2px solid black;
+  image-rendering: pixelated;
+}

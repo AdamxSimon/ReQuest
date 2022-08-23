@@ -1,10 +1,11 @@
 // React
 
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 // Types
 
 import { TileProps } from "../components/Tile/Tile";
+import { generateTileMap } from "../utils";
 import { GameObject } from "./GameObjectContext";
 
 enum CombatModes {
@@ -51,6 +52,10 @@ export const CombatToolProvider = ({
   const [selectedObject, setSelectedObject] = useState<
     GameObject | undefined
   >();
+
+  useEffect(() => {
+    setGrid({ ...grid, tiles: generateTileMap(grid.height, grid.width) });
+  }, [grid.height, grid.width]);
 
   const value: CombatToolContextState = {
     grid,

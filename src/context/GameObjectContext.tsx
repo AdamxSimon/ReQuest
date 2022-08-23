@@ -1,7 +1,8 @@
 // React
 
-import { createContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useDefaultObjects } from "../hooks/useDefaultObjects";
+import { CharactersContext } from "./CharactersContext";
 
 export enum GameObjectTypes {
   Ground = "Ground",
@@ -21,6 +22,7 @@ export interface GameObject {
 
 interface GameObjectContextState {
   gameObjects: GameObject[];
+  setGameObjects: React.Dispatch<React.SetStateAction<GameObject[]>>;
 }
 
 export const GameObjectContext = createContext<GameObjectContextState>(
@@ -36,10 +38,28 @@ export const GameObjectProvider = ({
 }: GameObjectProviderProps): JSX.Element => {
   const defaultObjects = useDefaultObjects();
 
+  const { characters } = useContext(CharactersContext);
+
   const [gameObjects, setGameObjects] = useState<GameObject[]>(defaultObjects);
+
+  useEffect(() => {
+    const defaultObjectsCopy: GameObject[] = [...defaultObjects];
+
+    for (let character of characters) {
+      defaultObjectsCopy.push({
+        id: defaultObjectsCopy.length,
+        type: GameObjectTypes.Character,
+        position: undefined,
+        image: character.image,
+      });
+    }
+
+    setGameObjects(defaultObjectsCopy);
+  }, [characters.length]);
 
   const value: GameObjectContextState = {
     gameObjects,
+    setGameObjects,
   };
 
   return (
