@@ -18,6 +18,7 @@ interface Grid {
   width: number;
   tiles: TileProps[];
   tileSize: number;
+  placedCharacters: GameObject[];
 }
 
 interface CombatToolContextState {
@@ -47,6 +48,7 @@ export const CombatToolProvider = ({
     width: 1,
     tiles: [{ position: [0, 0] }],
     tileSize: 64,
+    placedCharacters: [],
   });
   const [mode, setMode] = useState<CombatModes>(CombatModes.Draw);
   const [selectedObject, setSelectedObject] = useState<

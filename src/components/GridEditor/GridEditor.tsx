@@ -34,7 +34,9 @@ const GridEditor = (): JSX.Element => {
   );
 
   const filteredGameObjects = gameObjects.filter(
-    (gameObject) => gameObject.type === displayedObjects
+    (gameObject) =>
+      gameObject.type === displayedObjects &&
+      !grid.placedCharacters.some((character) => gameObject.id === character.id)
   );
 
   const blockStrings = (event: ChangeEvent<HTMLInputElement>) => {

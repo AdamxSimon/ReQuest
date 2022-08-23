@@ -46,7 +46,14 @@ const Tile = (props: TileProps) => {
         }
       }
     }
-    setGrid({ ...grid, tiles: tilesCopy });
+    setGrid({
+      ...grid,
+      tiles: tilesCopy,
+      placedCharacters:
+        selectedObject?.type === GameObjectTypes.Character
+          ? [...grid.placedCharacters, selectedObject]
+          : grid.placedCharacters,
+    });
   };
 
   const styles: StylesObject = {
