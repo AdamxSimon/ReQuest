@@ -1,32 +1,34 @@
 // React
 
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
-// Import
+// Types
 
 import { Character } from "../types/Character";
-import { GameObjectContext } from "./GameObjectContext";
-
-enum LocalStorageKeys {
-  Characters = "characters",
-}
 
 interface CharactersContextState {
   characters: Character[];
   setCharacters: React.Dispatch<React.SetStateAction<Character[]>>;
+  saveCharacter: (characterToSave: Character) => void;
 }
 
-const characterSaveData: string | null = localStorage.getItem(
-  LocalStorageKeys.Characters
-);
+const charactersSaveData: string | null = localStorage.getItem("characters");
 
-const initialCharactersState: Character[] = !!characterSaveData
-  ? JSON.parse(characterSaveData)
+const initialCharactersState: Character[] = charactersSaveData
+  ? JSON.parse(charactersSaveData)
   : [];
 
-export const CharactersContext = createContext<CharactersContextState>(
-  {} as CharactersContextState
-);
+export const CharactersContext = createContext<CharactersContextState>({
+  characters: [],
+  setCharacters: () => {},
+  saveCharacter: () => {},
+} as CharactersContextState);
 
 interface CharactersProviderProps {
   children: JSX.Element;
@@ -35,19 +37,39 @@ interface CharactersProviderProps {
 export const CharactersProvider = ({
   children,
 }: CharactersProviderProps): JSX.Element => {
-  const { gameObjects, setGameObjects } = useContext(GameObjectContext);
-
   const [characters, setCharacters] = useState<Character[]>(
     initialCharactersState
   );
 
-  const value: CharactersContextState = { characters, setCharacters };
+  const saveCharacter = useCallback(
+    (characterToSave: Character): void => {
+      const characterToSaveIndex: number = characters.findIndex(
+        (characterFromState) => characterToSave.id === characterFromState.id
+      );
+
+      if (characterToSaveIndex === -1) {
+        setCharacters([...characters, characterToSave]);
+      } else {
+        setCharacters(
+          characters.map((characterFromState, index) => {
+            if (index === characterToSaveIndex) {
+              return characterToSave;
+            } else {
+              return characterFromState;
+            }
+          })
+        );
+      }
+    },
+    [characters]
+  );
+
+  const value: CharactersContextState = useMemo(() => {
+    return { characters, setCharacters, saveCharacter };
+  }, [characters, saveCharacter]);
 
   useEffect(() => {
-    localStorage.setItem(
-      LocalStorageKeys.Characters,
-      JSON.stringify(characters)
-    );
+    localStorage.setItem("characters", JSON.stringify(characters));
   }, [characters]);
 
   return (

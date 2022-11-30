@@ -1,11 +1,11 @@
 // React
 
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 // Enums
 
-import { Character } from "../../types/Character";
-import { getAttributeModifier } from "../../utils";
+import { Character } from "../../../../types/Character";
+import { getAttributeModifier } from "../../../../utils";
 
 // Styles
 
@@ -41,17 +41,18 @@ const SavingThrowContainer = (
     transform: proficient ? "translate(-2px, -2px)" : "translate(0, 0)",
   };
 
-  useEffect(() => {
+  const toggle = useCallback(() => {
     const characterCopy = { ...character };
-    characterCopy.savingThrows[attribute.toLowerCase()] = proficient;
+    characterCopy.savingThrows[attribute.toLowerCase()] = !proficient;
     setCharacterBeingEdited(characterCopy);
-  }, [proficient]);
+    setProficient(!proficient);
+  }, [attribute, character, proficient, setCharacterBeingEdited]);
 
   return (
     <div
       className={classes.savingThrowContainer}
       style={style}
-      onClick={() => setProficient((proficient) => !proficient)}
+      onClick={toggle}
     >
       <div className={classes.header}>{attribute}</div>
       <div className={classes.pointsContainer}>

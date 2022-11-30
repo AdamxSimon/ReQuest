@@ -1,29 +1,22 @@
 // React
 
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 
-// Custom Components
+// Components
 
-import TextInput from "../TextInput/TextInput";
-import AttributeContainer from "../AttributeContainer/AttributeContainer";
-import SkillContainer from "../SkillContainer/SkillContainer";
+import AttributeContainer from "./attribute-container/AttributeContainer";
+import SavingThrowContainer from "./saving-throw-container/SavingThrowContainer";
+import SkillContainer from "./skill-container/SkillContainer";
+import TextInput from "../../../components/text-input/TextInput";
 
-// Context
+// Types
 
-import { CharactersToolContext } from "../../context/CharactersToolContext";
-
-// Interfaces
-
-import { Character } from "../../types/Character";
-
-// Enums
-
-import { Skills } from "../../types/Character";
+import { Character } from "../../../types/Character";
+import { Skills } from "../../../types/Character";
 
 // Styles
 
 import classes from "./styles.module.css";
-import SavingThrowContainer from "../SavingThrowContainer/SavingThrowContainer";
 
 enum Headers {
   BasicInfo = "Basic Info",
@@ -74,10 +67,17 @@ const skillsAttributesMap: [Skills, AttributesLabels][] = [
   [Skills.Survival, AttributesLabels.Wisdom],
 ];
 
-const CharacterSheet = (): JSX.Element => {
-  const { characterBeingEdited, setCharacterBeingEdited } = useContext(
-    CharactersToolContext
-  );
+interface CharacterDetailsScreenProps {
+  characterBeingEdited: Character | null;
+  setCharacterBeingEdited: React.Dispatch<
+    React.SetStateAction<Character | null>
+  >;
+}
+
+const CharacterDetailsScreen = (
+  props: CharacterDetailsScreenProps
+): JSX.Element => {
+  const { characterBeingEdited, setCharacterBeingEdited } = props;
 
   const sliderRef = useRef<HTMLInputElement>(null);
   const pictureInputRef = useRef<HTMLInputElement>(null);
@@ -141,6 +141,7 @@ const CharacterSheet = (): JSX.Element => {
           );
         })}
       </div>
+
       <div className={classes.header}>{Headers.Proficiency}</div>
       <div className={classes.section}>
         <div
@@ -168,6 +169,7 @@ const CharacterSheet = (): JSX.Element => {
           }}
         />
       </div>
+
       <div className={classes.header}>{Headers.Attributes}</div>
       <div className={classes.section}>
         {Object.values(AttributesLabels).map((label, index) => {
@@ -183,6 +185,7 @@ const CharacterSheet = (): JSX.Element => {
           );
         })}
       </div>
+
       <div className={classes.header}>{Headers.SavingThrows}</div>
       <div className={classes.section}>
         {Object.values(AttributesLabels).map((attribute, index) => {
@@ -196,6 +199,7 @@ const CharacterSheet = (): JSX.Element => {
           );
         })}
       </div>
+
       <div className={classes.header}>{Headers.Skills}</div>
       <div className={classes.section}>
         {skillsAttributesMap.map((data, index) => {
@@ -212,6 +216,7 @@ const CharacterSheet = (): JSX.Element => {
           );
         })}
       </div>
+
       <div className={classes.header}>{Headers.Picture}</div>
       <div
         className={classes.section}
@@ -231,6 +236,7 @@ const CharacterSheet = (): JSX.Element => {
         <img
           className={classes.picturePreview}
           src={character.image}
+          alt={"Character"}
           height={64}
           width={64}
           style={!character.image ? { display: "none" } : undefined}
@@ -240,4 +246,4 @@ const CharacterSheet = (): JSX.Element => {
   );
 };
 
-export default CharacterSheet;
+export default CharacterDetailsScreen;

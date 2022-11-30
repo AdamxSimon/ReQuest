@@ -4,19 +4,27 @@ import { useContext } from "react";
 
 // Context
 
-import { CharactersContext } from "../../context/CharactersContext";
-import { CharactersToolContext } from "../../context/CharactersToolContext";
+import { CharactersContext } from "../../../context/CharactersContext";
+import { Character } from "../../../types/Character";
 
 // Custom Components
 
-import CharacterCard from "../CharacterCard/CharacterCard";
+import CharacterCard from "./character-card/CharacterCard";
 
 // Styles
 
 import classes from "./styles.module.css";
 
-const CharacterCards = (): JSX.Element => {
-  const { setCharacterBeingEdited } = useContext(CharactersToolContext);
+interface CharactersOverviewScreenProps {
+  setCharacterBeingEdited: React.Dispatch<
+    React.SetStateAction<Character | null>
+  >;
+}
+
+const CharactersOverviewScreen = (
+  props: CharactersOverviewScreenProps
+): JSX.Element => {
+  const { setCharacterBeingEdited } = props;
   const { characters } = useContext(CharactersContext);
 
   return (
@@ -34,4 +42,4 @@ const CharacterCards = (): JSX.Element => {
   );
 };
 
-export default CharacterCards;
+export default CharactersOverviewScreen;

@@ -1,51 +1,17 @@
-// React
+// Components
 
-import { useState } from "react";
-
-// Context
-
-import { GameObjectProvider } from "./context/GameObjectContext";
-import { CharactersProvider } from "./context/CharactersContext";
-import { CharactersToolProvider } from "./context/CharactersToolContext";
-import { CombatToolProvider } from "./context/CombatToolContext";
-
-// Custom Components
-
-import NavigationBar from "./components/NavigationBar/NavigationBar";
-import CharactersTool from "./tools/CharactersTool/CharactersTool";
-import CombatTool from "./tools/CombatTool/CombatTool";
+import CharacterManagementTool from "./tools/character-management-tool/CharacterManagementTool";
 
 // Styles
 
-import "./App.css";
+import classes from "./styles.module.css";
 
-export enum Tools {
-  Characters,
-  Enemies,
-  Items,
-  Combat,
-}
-
-export const App = (): JSX.Element => {
-  const [currentTool, setCurrentTool] = useState<Tools>(Tools.Characters);
-
+const App = (): JSX.Element => {
   return (
-    <CharactersProvider>
-      <GameObjectProvider>
-        <div className="App">
-          <NavigationBar setCurrentTool={setCurrentTool} />
-          {currentTool === Tools.Characters && (
-            <CharactersToolProvider>
-              <CharactersTool />
-            </CharactersToolProvider>
-          )}
-          {currentTool === Tools.Combat && (
-            <CombatToolProvider>
-              <CombatTool />
-            </CombatToolProvider>
-          )}
-        </div>
-      </GameObjectProvider>
-    </CharactersProvider>
+    <div className={classes.app}>
+      <CharacterManagementTool />
+    </div>
   );
 };
+
+export default App;

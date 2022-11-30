@@ -1,11 +1,11 @@
 // React
 
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 // Enums
 
-import { Character, Skills } from "../../types/Character";
-import { getAttributeModifier } from "../../utils";
+import { Character, Skills } from "../../../../types/Character";
+import { getAttributeModifier } from "../../../../utils";
 
 // Styles
 
@@ -43,16 +43,13 @@ const SkillContainer = (props: SkillContainerProps): JSX.Element => {
     transform: proficient ? "translate(-2px, -2px)" : "translate(0, 0)",
   };
 
-  useEffect(() => {
-    updateCharacterSkills(skill, proficient);
-  }, [proficient]);
+  const toggle = useCallback(() => {
+    updateCharacterSkills(skill, !proficient);
+    setProficient(!proficient);
+  }, [proficient, skill, updateCharacterSkills]);
 
   return (
-    <div
-      className={classes.skillContainer}
-      style={style}
-      onClick={() => setProficient((proficient) => !proficient)}
-    >
+    <div className={classes.skillContainer} style={style} onClick={toggle}>
       <div className={classes.header}>{skill}</div>
       <div className={classes.pointsContainer}>
         <div className={classes.modifier}>

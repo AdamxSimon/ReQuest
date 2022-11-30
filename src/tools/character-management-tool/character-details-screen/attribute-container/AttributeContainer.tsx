@@ -1,14 +1,16 @@
 // React
 
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 // Custom Components
 
-import PointsButton, { Buttons } from "../PointsButton/PointsButton";
+import PointsButton, {
+  Buttons,
+} from "../../../../components/point-adjustment-button/PointAdjustmentButton";
 
 // Utils
 
-import { getAttributeModifier } from "../../utils";
+import { getAttributeModifier } from "../../../../utils";
 
 // Styles
 
@@ -26,23 +28,23 @@ const AttributeContainer = (props: AttributeContainerProps): JSX.Element => {
 
   const modifier: number = getAttributeModifier(points);
 
-  useEffect(() => {
-    updateCharacterAttributes(label.toLowerCase(), points);
-  }, [points]);
+  const increment = useCallback(() => {
+    setPoints((points) => points + 1);
+    updateCharacterAttributes(label.toLowerCase(), points + 1);
+  }, [label, points, updateCharacterAttributes]);
+
+  const decrement = useCallback(() => {
+    setPoints((points) => points - 1);
+    updateCharacterAttributes(label.toLowerCase(), points - 1);
+  }, [label, points, updateCharacterAttributes]);
 
   return (
     <div className={classes.attributesContainer}>
       <div className={classes.header}>{label}</div>
       <div className={classes.pointsContainer}>
-        <PointsButton
-          type={Buttons.Decrement}
-          onClick={() => setPoints((points) => points - 1)}
-        />
+        <PointsButton type={Buttons.Decrement} onClick={decrement} />
         <div className={classes.points}>{points}</div>
-        <PointsButton
-          type={Buttons.Increment}
-          onClick={() => setPoints((points) => points + 1)}
-        />
+        <PointsButton type={Buttons.Increment} onClick={increment} />
       </div>
       <div className={classes.modifier}>
         {modifier >= 0 ? `+${modifier}` : modifier}
