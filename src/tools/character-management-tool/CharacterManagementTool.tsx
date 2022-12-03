@@ -10,6 +10,7 @@ import { CharactersContext } from "../../context/CharactersContext";
 
 import Button from "../../components/button/Button";
 import CharacterDetailsScreen from "./character-details-screen/CharacterDetailsScreen";
+import CharacterManagementToolbar from "./character-management-toolbar/CharacterManagementToolbar";
 import CharactersOverviewScreen from "./characters-overview-screen/CharactersOverviewScreen";
 
 // Types
@@ -26,8 +27,6 @@ const CharacterManagementTool = (): JSX.Element => {
 
   const [characterBeingEdited, setCharacterBeingEdited] =
     useState<Character | null>(null);
-
-  console.log({ characterBeingEdited });
 
   const deleteCharacter = useCallback(() => {
     if (characterBeingEdited) {
@@ -70,7 +69,10 @@ const CharacterManagementTool = (): JSX.Element => {
         <Button
           key={"Save"}
           text={"Save"}
-          onClick={() => saveCharacter(characterBeingEdited)}
+          onClick={() => {
+            saveCharacter(characterBeingEdited);
+            setCharacterBeingEdited(null);
+          }}
         />,
       ]
     : [
@@ -96,9 +98,7 @@ const CharacterManagementTool = (): JSX.Element => {
 
   return (
     <div className={classes.toolContainer}>
-      <div className={classes.toolbar}>
-        {toolbarButtons.map((button) => button)}
-      </div>
+      <CharacterManagementToolbar buttons={toolbarButtons} />
       {currentView}
     </div>
   );

@@ -1,0 +1,18 @@
+.toolbar {
+  min-height: 40px;
+  width: 100%;
+  background-color: white;
+  padding: 8px;
+  box-shadow: 0 0 8px gray;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.leftButtonsContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
