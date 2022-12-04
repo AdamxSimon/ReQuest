@@ -37,10 +37,7 @@ const SkillContainer = (props: SkillContainerProps): JSX.Element => {
 
   const style = {
     backgroundColor: proficient ? "black" : "white",
-    border: proficient ? "2px solid white" : "2px solid black",
-    boxShadow: proficient ? "2px 2px 4px 0 gray" : "0 0 black",
     color: proficient ? "white" : "black",
-    transform: proficient ? "translate(-2px, -2px)" : "translate(0, 0)",
   };
 
   const toggle = useCallback(() => {

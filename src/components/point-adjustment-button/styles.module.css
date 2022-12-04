@@ -1,20 +1,15 @@
 .pointsButton {
   height: 24px;
   width: 24px;
-  border: 2px solid black;
-  box-shadow: 2px 2px 4px 0 gray;
+  box-shadow: 0 0 8px 0 gray;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  font-weight: bold;
   cursor: pointer;
-  transform: translate(0, 0);
-  transition: all 0.2s;
+  transition: all 0.1s;
 }
 
 .pointsButton:active {
-  box-shadow: 0 0 0 0 black;
-  transform: translate(2px, 2px);
+  box-shadow: 0 0 4px 0 black;
 }

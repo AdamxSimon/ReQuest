@@ -80,7 +80,6 @@ const CharacterDetailsScreen = (
   const { characterBeingEdited, setCharacterBeingEdited } = props;
 
   const sliderRef = useRef<HTMLInputElement>(null);
-  const pictureInputRef = useRef<HTMLInputElement>(null);
 
   const character: Character = characterBeingEdited as Character;
 
@@ -106,29 +105,14 @@ const CharacterDetailsScreen = (
     setCharacterBeingEdited(copy);
   };
 
-  const handlePictureUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event?.target?.files?.[0];
-    const fileReader = new FileReader();
-
-    fileReader.onload = () => {
-      setCharacterBeingEdited({
-        ...character,
-        image: fileReader.result as string,
-      });
-    };
-
-    if (file) fileReader.readAsDataURL(file);
-  };
-
   return (
     <div className={classes.characterSheet}>
       <div className={classes.header}>{Headers.BasicInfo}</div>
-      <div className={classes.section}>
+      <div className={classes.gridSection}>
         {Object.values(TextFields).map((textField, index) => {
           return (
             <TextInput
               key={index}
-              style={{ flex: 1 }}
               placeholder={textField}
               value={character[textField.toLowerCase()] as string}
               onChange={(event) => {
@@ -143,12 +127,13 @@ const CharacterDetailsScreen = (
       </div>
 
       <div className={classes.header}>{Headers.Proficiency}</div>
-      <div className={classes.section}>
+      <div className={classes.containerSection}>
         <div
           style={{
             width: "100%",
+            paddingBottom: 8,
             textAlign: "center",
-            fontSize: 32,
+            fontSize: 24,
             fontWeight: "bold",
           }}
         >
@@ -171,7 +156,7 @@ const CharacterDetailsScreen = (
       </div>
 
       <div className={classes.header}>{Headers.Attributes}</div>
-      <div className={classes.section}>
+      <div className={classes.gridSection}>
         {Object.values(AttributesLabels).map((label, index) => {
           return (
             <AttributeContainer
@@ -187,7 +172,7 @@ const CharacterDetailsScreen = (
       </div>
 
       <div className={classes.header}>{Headers.SavingThrows}</div>
-      <div className={classes.section}>
+      <div className={classes.gridSection}>
         {Object.values(AttributesLabels).map((attribute, index) => {
           return (
             <SavingThrowContainer
@@ -201,7 +186,7 @@ const CharacterDetailsScreen = (
       </div>
 
       <div className={classes.header}>{Headers.Skills}</div>
-      <div className={classes.section}>
+      <div className={classes.gridSection}>
         {skillsAttributesMap.map((data, index) => {
           const [skill, attribute] = data;
           return (
@@ -215,32 +200,6 @@ const CharacterDetailsScreen = (
             />
           );
         })}
-      </div>
-
-      <div className={classes.header}>{Headers.Picture}</div>
-      <div
-        className={classes.section}
-        style={{ justifyContent: "center", alignItems: "center" }}
-      >
-        <label htmlFor="picture-input" style={{ cursor: "pointer" }}>
-          {character.image ? "Change" : "Upload"}
-        </label>
-        <input
-          ref={pictureInputRef}
-          className={classes.pictureInput}
-          id="picture-input"
-          type="file"
-          accept="image/*"
-          onChange={handlePictureUpload}
-        />
-        <img
-          className={classes.picturePreview}
-          src={character.image}
-          alt={"Character"}
-          height={64}
-          width={64}
-          style={!character.image ? { display: "none" } : undefined}
-        />
       </div>
     </div>
   );

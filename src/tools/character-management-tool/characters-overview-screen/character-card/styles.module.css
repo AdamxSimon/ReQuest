@@ -8,14 +8,10 @@
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  transition: all 0.4s;
+  transition: all 0.2s;
   overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-.characterCard::-webkit-scrollbar {
-  display: none;
 }
 
 .characterCard:hover {
@@ -53,12 +49,39 @@
 
 .skillsContainer {
   width: 100%;
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.skillsContainerOverflow {
   padding-top: 8px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex: 1;
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  flex: 1;
   overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.skillsContainerOverflow::-webkit-scrollbar {
+  display: none;
+}
+
+.emptySkillsContainer {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .skill {

@@ -1,5 +1,6 @@
 // Types
 
+import { useMemo } from "react";
 import { Character } from "../../../../types/Character";
 
 // Styles
@@ -13,6 +14,10 @@ interface CharacterCardProps {
 const CharacterCard = (props: CharacterCardProps): JSX.Element => {
   const { character, onClick } = props;
 
+  const characterHasSkills: boolean = useMemo(() => {
+    return character.skills.length > 0;
+  }, [character.skills.length]);
+
   return (
     <div className={classes.characterCard} onClick={onClick}>
       <div className={classes.basicInfoContainer}>
@@ -25,20 +30,29 @@ const CharacterCard = (props: CharacterCardProps): JSX.Element => {
         {Object.entries(character.attributes).map((attribute) => {
           const [label, value] = attribute;
           return (
-            <div className={classes.attribute}>
+            <div key={label} className={classes.attribute}>
               <div>{label.substring(0, 3).toUpperCase()}</div>
               <div>{value}</div>
             </div>
           );
         })}
       </div>
-      <div className={classes.bottomContainer}>
+
+      {characterHasSkills ? (
         <div className={classes.skillsContainer}>
-          {character.skills.map((skill) => {
-            return <div className={classes.skill}>{skill}</div>;
-          })}
+          <div className={classes.skillsContainerOverflow}>
+            {character.skills.map((skill) => {
+              return (
+                <div key={skill} className={classes.skill}>
+                  {skill}
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className={classes.emptySkillsContainer}>{"No Skills"}</div>
+      )}
     </div>
   );
 };
