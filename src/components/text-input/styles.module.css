@@ -1,4 +1,5 @@
 .textInput {
+  background-color: lavender;
   padding: 8px;
   outline: none;
   border: none;
@@ -8,4 +9,5 @@
   align-items: center;
   text-align: center;
   cursor: text;
+  transition: border-bottom 0.2s linear;
 }

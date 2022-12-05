@@ -39,8 +39,7 @@ const SavingThrowContainer = (
     : getAttributeModifier(character.attributes[attribute.toLowerCase()]);
 
   const style = {
-    backgroundColor: proficient ? "black" : "white",
-    color: proficient ? "white" : "black",
+    backgroundColor: proficient ? "lightgreen" : "lavender",
   };
 
   const toggle = useCallback(() => {

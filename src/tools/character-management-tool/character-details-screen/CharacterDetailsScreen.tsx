@@ -5,6 +5,7 @@ import { useRef } from "react";
 // Components
 
 import AttributeContainer from "./attribute-container/AttributeContainer";
+import CollapsibleContainer from "./collapsible-container/CollapsibleContainer";
 import SavingThrowContainer from "./saving-throw-container/SavingThrowContainer";
 import SkillContainer from "./skill-container/SkillContainer";
 import TextInput from "../../../components/text-input/TextInput";
@@ -107,101 +108,106 @@ const CharacterDetailsScreen = (
 
   return (
     <div className={classes.characterSheet}>
-      <div className={classes.header}>{Headers.BasicInfo}</div>
-      <div className={classes.gridSection}>
-        {Object.values(TextFields).map((textField, index) => {
-          return (
-            <TextInput
-              key={index}
-              placeholder={textField}
-              value={character[textField.toLowerCase()] as string}
-              onChange={(event) => {
-                updateCharacterText(
-                  textField.toLowerCase(),
-                  event.target.value
-                );
-              }}
-            ></TextInput>
-          );
-        })}
-      </div>
-
-      <div className={classes.header}>{Headers.Proficiency}</div>
-      <div className={classes.containerSection}>
-        <div
-          style={{
-            width: "100%",
-            paddingBottom: 8,
-            textAlign: "center",
-            fontSize: 24,
-            fontWeight: "bold",
-          }}
-        >
-          {`+${character.proficiencyBonus}`}
+      <CollapsibleContainer header={Headers.BasicInfo}>
+        <div className={classes.gridSection}>
+          {Object.values(TextFields).map((textField, index) => {
+            return (
+              <TextInput
+                key={index}
+                placeholder={textField}
+                value={character[textField.toLowerCase()] as string}
+                onChange={(event) => {
+                  updateCharacterText(
+                    textField.toLowerCase(),
+                    event.target.value
+                  );
+                }}
+              ></TextInput>
+            );
+          })}
         </div>
-        <input
-          ref={sliderRef}
-          type="range"
-          className={classes.slider}
-          value={character.proficiencyBonus}
-          onInput={() => {
-            setCharacterBeingEdited({
-              ...character,
-              proficiencyBonus: sliderRef.current
-                ? +sliderRef.current.value
-                : 0,
-            });
-          }}
-        />
-      </div>
+      </CollapsibleContainer>
 
-      <div className={classes.header}>{Headers.Attributes}</div>
-      <div className={classes.gridSection}>
-        {Object.values(AttributesLabels).map((label, index) => {
-          return (
-            <AttributeContainer
-              key={index}
-              label={label}
-              initialPointsState={
-                character.attributes[label.toLowerCase()] as number
-              }
-              updateCharacterAttributes={updateCharacterAttributes}
-              character={characterBeingEdited}
-            />
-          );
-        })}
-      </div>
+      <CollapsibleContainer header={Headers.Proficiency}>
+        <div className={classes.containerSection}>
+          <div
+            style={{
+              width: "100%",
+              paddingBottom: 8,
+              textAlign: "center",
+              fontSize: 24,
+              fontWeight: "bold",
+            }}
+          >
+            {`+${character.proficiencyBonus}`}
+          </div>
+          <input
+            ref={sliderRef}
+            type="range"
+            className={classes.slider}
+            value={character.proficiencyBonus}
+            onInput={() => {
+              setCharacterBeingEdited({
+                ...character,
+                proficiencyBonus: sliderRef.current
+                  ? +sliderRef.current.value
+                  : 0,
+              });
+            }}
+          />
+        </div>
+      </CollapsibleContainer>
 
-      <div className={classes.header}>{Headers.SavingThrows}</div>
-      <div className={classes.gridSection}>
-        {Object.values(AttributesLabels).map((attribute, index) => {
-          return (
-            <SavingThrowContainer
-              key={index}
-              attribute={attribute}
-              character={character}
-              setCharacterBeingEdited={setCharacterBeingEdited}
-            />
-          );
-        })}
-      </div>
+      <CollapsibleContainer header={Headers.Attributes}>
+        <div className={classes.gridSection}>
+          {Object.values(AttributesLabels).map((label, index) => {
+            return (
+              <AttributeContainer
+                key={index}
+                label={label}
+                initialPointsState={
+                  character.attributes[label.toLowerCase()] as number
+                }
+                updateCharacterAttributes={updateCharacterAttributes}
+                character={characterBeingEdited}
+              />
+            );
+          })}
+        </div>
+      </CollapsibleContainer>
 
-      <div className={classes.header}>{Headers.Skills}</div>
-      <div className={classes.gridSection}>
-        {skillsAttributesMap.map((data, index) => {
-          const [skill, attribute] = data;
-          return (
-            <SkillContainer
-              key={index}
-              skill={skill}
-              attribute={attribute}
-              initialProficientState={character.skills.includes(skill)}
-              updateCharacterSkills={updateCharacterSkills}
-              character={character}
-            />
-          );
-        })}
-      </div>
+      <CollapsibleContainer header={Headers.SavingThrows}>
+        <div className={classes.gridSection}>
+          {Object.values(AttributesLabels).map((attribute, index) => {
+            return (
+              <SavingThrowContainer
+                key={index}
+                attribute={attribute}
+                character={character}
+                setCharacterBeingEdited={setCharacterBeingEdited}
+              />
+            );
+          })}
+        </div>
+      </CollapsibleContainer>
+
+      <CollapsibleContainer header={Headers.Skills}>
+        <div className={classes.gridSection}>
+          {skillsAttributesMap.map((data, index) => {
+            const [skill, attribute] = data;
+            return (
+              <SkillContainer
+                key={index}
+                skill={skill}
+                attribute={attribute}
+                initialProficientState={character.skills.includes(skill)}
+                updateCharacterSkills={updateCharacterSkills}
+                character={character}
+              />
+            );
+          })}
+        </div>
+      </CollapsibleContainer>
     </div>
   );
 };
