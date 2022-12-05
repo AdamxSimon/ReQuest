@@ -81,7 +81,7 @@ const CharacterDetailsScreen = (
 
   const sliderRef = useRef<HTMLInputElement>(null);
 
-  const character: Character = characterBeingEdited as Character;
+  const character: Character = characterBeingEdited;
 
   const updateCharacterText = (key: string, value: string): void => {
     const copy: Character = { ...character };

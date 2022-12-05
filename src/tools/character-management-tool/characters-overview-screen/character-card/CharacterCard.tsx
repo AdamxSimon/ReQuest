@@ -21,10 +21,12 @@ const CharacterCard = (props: CharacterCardProps): JSX.Element => {
   return (
     <div className={classes.characterCard} onClick={onClick}>
       <div className={classes.basicInfoContainer}>
-        <div>{character.name || "Jimmy"}</div>
-        <div>{`Level ${character.level || 1} ${
-          character.class || "Rogue"
-        }`}</div>
+        <div>{character.name || "No Name"}</div>
+        <div>
+          {character.level && character.class
+            ? `Level ${character.level} ${character.class}`
+            : ""}
+        </div>
       </div>
       <div className={classes.attributesContainer}>
         {Object.entries(character.attributes).map((attribute) => {

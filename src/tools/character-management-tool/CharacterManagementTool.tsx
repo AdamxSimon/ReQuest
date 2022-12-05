@@ -80,7 +80,7 @@ const CharacterManagementTool = (): JSX.Element => {
           key={"New Character"}
           text={"New Character"}
           onClick={() => {
-            setCharacterBeingEdited(new Character({ id: characters.length }));
+            setCharacterBeingEdited(new Character({ id: Date.now() }));
           }}
         />,
       ];

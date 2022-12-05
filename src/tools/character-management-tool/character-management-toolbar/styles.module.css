@@ -5,6 +5,8 @@
   padding: 8px;
   box-shadow: 0 0 8px gray;
   display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
   justify-content: space-between;
   align-items: center;
   font-weight: bold;
@@ -15,4 +17,27 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.settingsContainer {
+  display: flex;
+  gap: 4px;
+}
+
+.settingsButton {
+  background-color: lightgray;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.settingsButton:active {
+  background-color: black;
+  color: white;
 }
