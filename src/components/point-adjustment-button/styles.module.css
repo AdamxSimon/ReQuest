@@ -1,4 +1,4 @@
-.pointsButton {
+.pointAdjustmentButton {
   height: 24px;
   width: 24px;
   box-shadow: 0 0 8px 0 gray;
@@ -10,6 +10,6 @@
   transition: all 0.1s;
 }
 
-.pointsButton:active {
+.pointAdjustmentButton:active {
   box-shadow: 0 0 4px 0 black;
 }

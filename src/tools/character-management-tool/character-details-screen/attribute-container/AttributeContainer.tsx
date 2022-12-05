@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 // Custom Components
 
 import PointsButton, {
-  Buttons,
+  AdjustmentActions,
 } from "../../../../components/point-adjustment-button/PointAdjustmentButton";
 
 // Utils
@@ -47,9 +47,9 @@ const AttributeContainer = (props: AttributeContainerProps): JSX.Element => {
     <div className={classes.attributesContainer}>
       <div className={classes.header}>{label}</div>
       <div className={classes.pointsContainer}>
-        <PointsButton type={Buttons.Decrement} onClick={decrement} />
+        <PointsButton type={AdjustmentActions.Decrement} onClick={decrement} />
         <div className={classes.points}>{points}</div>
-        <PointsButton type={Buttons.Increment} onClick={increment} />
+        <PointsButton type={AdjustmentActions.Increment} onClick={increment} />
       </div>
       <div className={classes.modifier}>
         {modifier >= 0 ? `+${modifier}` : modifier}

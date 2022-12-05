@@ -7,13 +7,13 @@ import MinusPNG from "../../assets/minus.png";
 
 import classes from "./styles.module.css";
 
-export enum Buttons {
+export enum AdjustmentActions {
   Decrement,
   Increment,
 }
 
 interface PointsButtonProps {
-  type: Buttons;
+  type: AdjustmentActions;
   onClick: () => void;
 }
 
@@ -21,10 +21,10 @@ const PointsButton = (props: PointsButtonProps): JSX.Element => {
   const { type, onClick } = props;
 
   return (
-    <div className={classes.pointsButton} onClick={onClick}>
+    <div className={classes.pointAdjustmentButton} onClick={onClick}>
       <img
-        src={type === Buttons.Increment ? PlusPNG : MinusPNG}
-        alt={type === Buttons.Increment ? "Plus" : "Minus"}
+        src={type === AdjustmentActions.Increment ? PlusPNG : MinusPNG}
+        alt={type === AdjustmentActions.Increment ? "Plus" : "Minus"}
         height={12}
       />
     </div>

@@ -5,17 +5,15 @@ import classes from "./styles.module.css";
 interface TextInputProps {
   placeholder?: string;
   value: string;
-  style?: {};
-  onChange?: (event: any) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TextInput = (props: TextInputProps): JSX.Element => {
-  const { style, placeholder, value, onChange } = props;
+  const { placeholder, value, onChange } = props;
 
   return (
     <input
-      className={classes.input}
-      style={style}
+      className={classes.textInput}
       placeholder={placeholder}
       value={value}
       onChange={onChange}

@@ -1,5 +1,4 @@
 .button {
-  background-color: lightgreen;
   padding: 8px;
   border-radius: 8px;
   display: flex;
@@ -8,9 +7,4 @@
   font-weight: bold;
   text-align: center;
   cursor: pointer;
-}
-
-.button:active {
-  background-color: black;
-  color: white;
 }

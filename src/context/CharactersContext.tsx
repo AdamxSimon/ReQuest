@@ -83,7 +83,7 @@ export const CharactersProvider = ({
           ? characterData.filter((character) => !uuids.includes(character.id))
           : characterData;
       const newCharactersState: Character[] = [...characters, ...filteredData];
-      setCharacters(newCharactersState);
+      if (filteredData.length > 0) setCharacters(newCharactersState);
     },
     [characters]
   );
