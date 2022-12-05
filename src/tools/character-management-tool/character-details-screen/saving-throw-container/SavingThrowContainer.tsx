@@ -2,10 +2,13 @@
 
 import { useCallback, useState } from "react";
 
+// Utils
+
+import { getAttributeModifier, roll } from "../../../../utils";
+
 // Enums
 
 import { Character } from "../../../../types/Character";
-import { getAttributeModifier } from "../../../../utils";
 
 // Styles
 
@@ -28,6 +31,8 @@ const SavingThrowContainer = (
     character.savingThrows[attribute.toLowerCase()]
   );
 
+  const [isHovering, setIsHovering] = useState<boolean>(false);
+
   const modifier: number = proficient
     ? character.proficiencyBonus +
       getAttributeModifier(character.attributes[attribute.toLowerCase()])
@@ -45,13 +50,33 @@ const SavingThrowContainer = (
     setProficient(!proficient);
   }, [attribute, character, proficient, setCharacterBeingEdited]);
 
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.stopPropagation();
+      const check: number = roll(20);
+      const message: string = `${check} ${modifier >= 0 ? "+" : "-"} ${Math.abs(
+        modifier
+      )} = ${check + modifier}`;
+      alert(message);
+    },
+    [modifier]
+  );
+
   return (
     <div
       className={classes.savingThrowContainer}
       style={style}
       onClick={toggle}
     >
-      <div className={classes.header}>{attribute}</div>
+      <div
+        className={classes.header}
+        onClick={handleClick}
+        style={{ textDecoration: isHovering ? "underline" : "none" }}
+        onMouseOver={() => setIsHovering(true)}
+        onMouseOut={() => setIsHovering(false)}
+      >
+        {attribute}
+      </div>
       <div className={classes.pointsContainer}>
         <div className={classes.modifier}>
           {modifier >= 0 ? `+${modifier}` : modifier}

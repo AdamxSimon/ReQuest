@@ -68,7 +68,7 @@ const skillsAttributesMap: [Skills, AttributesLabels][] = [
 ];
 
 interface CharacterDetailsScreenProps {
-  characterBeingEdited: Character | null;
+  characterBeingEdited: Character;
   setCharacterBeingEdited: React.Dispatch<
     React.SetStateAction<Character | null>
   >;
@@ -166,6 +166,7 @@ const CharacterDetailsScreen = (
                 character.attributes[label.toLowerCase()] as number
               }
               updateCharacterAttributes={updateCharacterAttributes}
+              character={characterBeingEdited}
             />
           );
         })}

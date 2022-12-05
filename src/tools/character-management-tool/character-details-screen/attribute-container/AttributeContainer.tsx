@@ -10,7 +10,11 @@ import PointsButton, {
 
 // Utils
 
-import { getAttributeModifier } from "../../../../utils";
+import { getAttributeModifier, roll } from "../../../../utils";
+
+// Types
+
+import { Character } from "../../../../types/Character";
 
 // Styles
 
@@ -19,10 +23,12 @@ interface AttributeContainerProps {
   label: string;
   initialPointsState?: number;
   updateCharacterAttributes: (key: string, value: number) => void;
+  character: Character;
 }
 
 const AttributeContainer = (props: AttributeContainerProps): JSX.Element => {
-  const { label, initialPointsState, updateCharacterAttributes } = props;
+  const { label, initialPointsState, updateCharacterAttributes, character } =
+    props;
 
   const [points, setPoints] = useState<number>(initialPointsState || 8);
 

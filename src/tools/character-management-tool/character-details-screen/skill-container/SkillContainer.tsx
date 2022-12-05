@@ -2,10 +2,13 @@
 
 import { useCallback, useState } from "react";
 
+// Utils
+
+import { getAttributeModifier, roll } from "../../../../utils";
+
 // Enums
 
 import { Character, Skills } from "../../../../types/Character";
-import { getAttributeModifier } from "../../../../utils";
 
 // Styles
 
@@ -29,6 +32,7 @@ const SkillContainer = (props: SkillContainerProps): JSX.Element => {
   } = props;
 
   const [proficient, setProficient] = useState<boolean>(initialProficientState);
+  const [isHovering, setIsHovering] = useState<boolean>(false);
 
   const modifier: number = proficient
     ? character.proficiencyBonus +
@@ -45,9 +49,29 @@ const SkillContainer = (props: SkillContainerProps): JSX.Element => {
     setProficient(!proficient);
   }, [proficient, skill, updateCharacterSkills]);
 
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.stopPropagation();
+      const check: number = roll(20);
+      const message: string = `${check} ${modifier >= 0 ? "+" : "-"} ${Math.abs(
+        modifier
+      )} = ${check + modifier}`;
+      alert(message);
+    },
+    [modifier]
+  );
+
   return (
     <div className={classes.skillContainer} style={style} onClick={toggle}>
-      <div className={classes.header}>{skill}</div>
+      <div
+        className={classes.header}
+        onClick={handleClick}
+        style={{ textDecoration: isHovering ? "underline" : "none" }}
+        onMouseOver={() => setIsHovering(true)}
+        onMouseOut={() => setIsHovering(false)}
+      >
+        {skill}
+      </div>
       <div className={classes.pointsContainer}>
         <div className={classes.modifier}>
           {modifier >= 0 ? `+${modifier}` : modifier}
