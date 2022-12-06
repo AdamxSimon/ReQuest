@@ -9,9 +9,6 @@
   flex-direction: column;
   cursor: pointer;
   transition: all 0.2s;
-  overflow-y: scroll;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
 
 .characterCard:hover {
@@ -49,21 +46,20 @@
 
 .skillsContainer {
   width: 100%;
+  margin-top: 8px;
   position: relative;
   flex: 1;
   display: flex;
-  flex-direction: column;
 }
 
 .skillsContainerOverflow {
-  padding-top: 8px;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  flex: 1;
   display: flex;
+  align-content: flex-start;
   flex-wrap: wrap;
   gap: 4px;
   overflow-y: scroll;

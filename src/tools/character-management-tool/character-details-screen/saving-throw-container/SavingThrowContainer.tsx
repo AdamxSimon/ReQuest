@@ -1,87 +1,84 @@
 // React
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 // Utils
 
-import { getAttributeModifier, roll } from "../../../../utils";
-
-// Enums
-
-import { Character } from "../../../../types/Character";
+import { roll } from "../../../../utils";
 
 // Styles
 
 import classes from "./styles.module.css";
 
 interface SavingThrowContainerProps {
-  attribute: string;
-  character: Character;
-  setCharacterBeingEdited: React.Dispatch<
-    React.SetStateAction<Character | null>
-  >;
+  label: string;
+  isProficient: boolean;
+  proficiencyBonus: number;
+  relevantAttribute: string;
+  relevantAttributeModifier: number;
+  handleToggle: () => void;
 }
 
 const SavingThrowContainer = (
   props: SavingThrowContainerProps
 ): JSX.Element => {
-  const { attribute, character, setCharacterBeingEdited } = props;
+  const {
+    label,
+    isProficient,
+    proficiencyBonus,
+    relevantAttribute,
+    relevantAttributeModifier,
+    handleToggle,
+  } = props;
 
-  const [proficient, setProficient] = useState<boolean>(
-    character.savingThrows[attribute.toLowerCase()]
+  const [isHoveringOverHeader, setIsHoveringOverHeader] =
+    useState<boolean>(false);
+
+  const savingThrowModifier: number = useMemo(
+    () =>
+      isProficient
+        ? proficiencyBonus + relevantAttributeModifier
+        : relevantAttributeModifier,
+    [isProficient, proficiencyBonus, relevantAttributeModifier]
   );
-
-  const [isHovering, setIsHovering] = useState<boolean>(false);
-
-  const modifier: number = proficient
-    ? character.proficiencyBonus +
-      getAttributeModifier(character.attributes[attribute.toLowerCase()])
-    : getAttributeModifier(character.attributes[attribute.toLowerCase()]);
-
-  const style = {
-    backgroundColor: proficient ? "lightgreen" : "lavender",
-  };
-
-  const toggle = useCallback(() => {
-    const characterCopy = { ...character };
-    characterCopy.savingThrows[attribute.toLowerCase()] = !proficient;
-    setCharacterBeingEdited(characterCopy);
-    setProficient(!proficient);
-  }, [attribute, character, proficient, setCharacterBeingEdited]);
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       event.stopPropagation();
       const check: number = roll(20);
-      const message: string = `${check} ${modifier >= 0 ? "+" : "-"} ${Math.abs(
-        modifier
-      )} = ${check + modifier}`;
+      const message: string = `${check} ${
+        savingThrowModifier >= 0 ? "+" : "-"
+      } ${Math.abs(savingThrowModifier)} = ${check + savingThrowModifier}`;
       alert(message);
     },
-    [modifier]
+    [savingThrowModifier]
   );
 
   return (
     <div
       className={classes.savingThrowContainer}
-      style={style}
-      onClick={toggle}
+      style={{
+        backgroundColor: isProficient ? "lightgreen" : "lavender",
+      }}
+      onClick={handleToggle}
     >
       <div
         className={classes.header}
         onClick={handleClick}
-        style={{ textDecoration: isHovering ? "underline" : "none" }}
-        onMouseOver={() => setIsHovering(true)}
-        onMouseOut={() => setIsHovering(false)}
+        style={{ textDecoration: isHoveringOverHeader ? "underline" : "none" }}
+        onMouseOver={() => setIsHoveringOverHeader(true)}
+        onMouseOut={() => setIsHoveringOverHeader(false)}
       >
-        {attribute}
+        {label}
       </div>
       <div className={classes.pointsContainer}>
         <div className={classes.modifier}>
-          {modifier >= 0 ? `+${modifier}` : modifier}
+          {savingThrowModifier >= 0
+            ? `+${savingThrowModifier}`
+            : savingThrowModifier}
         </div>
       </div>
-      <div className={classes.attribute}>{`(${attribute})`}</div>
+      <div className={classes.attribute}>{`(${relevantAttribute})`}</div>
     </div>
   );
 };

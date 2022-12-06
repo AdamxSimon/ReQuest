@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { Character } from "../../../../types/Character";
+import { convertKeyToLabel } from "../../../../utils";
 
 // Styles
 
@@ -14,17 +15,17 @@ interface CharacterCardProps {
 const CharacterCard = (props: CharacterCardProps): JSX.Element => {
   const { character, onClick } = props;
 
-  const characterHasSkills: boolean = useMemo(() => {
-    return character.skills.length > 0;
-  }, [character.skills.length]);
+  const characterIsProficientInSomeSkills: boolean = useMemo(() => {
+    return Object.values(character.skills).some((skill) => skill.isProficient);
+  }, [character]);
 
   return (
     <div className={classes.characterCard} onClick={onClick}>
       <div className={classes.basicInfoContainer}>
-        <div>{character.name || "No Name"}</div>
+        <div>{character.info.name || "No Name"}</div>
         <div>
-          {character.level && character.class
-            ? `Level ${character.level} ${character.class}`
+          {character.info.level && character.info.class
+            ? `Level ${character.info.level} ${character.info.class}`
             : ""}
         </div>
       </div>
@@ -40,16 +41,20 @@ const CharacterCard = (props: CharacterCardProps): JSX.Element => {
         })}
       </div>
 
-      {characterHasSkills ? (
+      {characterIsProficientInSomeSkills ? (
         <div className={classes.skillsContainer}>
           <div className={classes.skillsContainerOverflow}>
-            {character.skills.map((skill) => {
-              return (
-                <div key={skill} className={classes.skill}>
-                  {skill}
-                </div>
-              );
-            })}
+            {Object.entries(character.skills)
+              .filter(([, value]) => value.isProficient)
+              .map((map) => {
+                const [key] = map;
+                const label: string = convertKeyToLabel(key);
+                return (
+                  <div key={label} className={classes.skill}>
+                    {convertKeyToLabel(key)}
+                  </div>
+                );
+              })}
           </div>
         </div>
       ) : (

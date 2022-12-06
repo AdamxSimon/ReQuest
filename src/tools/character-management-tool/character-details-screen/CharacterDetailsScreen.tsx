@@ -1,6 +1,6 @@
 // React
 
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 
 // Components
 
@@ -10,63 +10,23 @@ import SavingThrowContainer from "./saving-throw-container/SavingThrowContainer"
 import SkillContainer from "./skill-container/SkillContainer";
 import TextInput from "../../../components/text-input/TextInput";
 
+// Utils
+
+import { convertKeyToLabel, getAttributeModifier } from "../../../utils";
+
 // Types
 
-import { Character } from "../../../types/Character";
+import {
+  Attributes,
+  Character,
+  Info,
+  SavingThrows,
+} from "../../../types/Character";
 import { Skills } from "../../../types/Character";
 
 // Styles
 
 import classes from "./styles.module.css";
-
-enum Headers {
-  BasicInfo = "Basic Info",
-  Proficiency = "Proficiency",
-  Attributes = "Attributes",
-  SavingThrows = "Saving Throws",
-  Skills = "Skills",
-  Picture = "Picture",
-}
-
-enum TextFields {
-  Name = "Name",
-  Level = "Level",
-  Class = "Class",
-  Race = "Race",
-  Age = "Age",
-  Background = "Background",
-  Alignment = "Alignment",
-  Experience = "Experience",
-}
-
-enum AttributesLabels {
-  Strength = "Strength",
-  Dexterity = "Dexterity",
-  Constitution = "Constitution",
-  Intelligence = "Intelligence",
-  Wisdom = "Wisdom",
-  Charisma = "Charisma",
-}
-
-const skillsAttributesMap: [Skills, AttributesLabels][] = [
-  [Skills.Acrobatics, AttributesLabels.Dexterity],
-  [Skills.AnimalHandling, AttributesLabels.Wisdom],
-  [Skills.Arcana, AttributesLabels.Intelligence],
-  [Skills.Athletics, AttributesLabels.Strength],
-  [Skills.Deception, AttributesLabels.Charisma],
-  [Skills.History, AttributesLabels.Intelligence],
-  [Skills.Insight, AttributesLabels.Wisdom],
-  [Skills.Intimidation, AttributesLabels.Charisma],
-  [Skills.Medicine, AttributesLabels.Wisdom],
-  [Skills.Nature, AttributesLabels.Intelligence],
-  [Skills.Perception, AttributesLabels.Wisdom],
-  [Skills.Performance, AttributesLabels.Charisma],
-  [Skills.Persuasion, AttributesLabels.Charisma],
-  [Skills.Religion, AttributesLabels.Intelligence],
-  [Skills.SleightOfHand, AttributesLabels.Dexterity],
-  [Skills.Stealth, AttributesLabels.Dexterity],
-  [Skills.Survival, AttributesLabels.Wisdom],
-];
 
 interface CharacterDetailsScreenProps {
   characterBeingEdited: Character;
@@ -82,45 +42,73 @@ const CharacterDetailsScreen = (
 
   const sliderRef = useRef<HTMLInputElement>(null);
 
-  const character: Character = characterBeingEdited;
+  const updateCharacterInfo = useCallback(
+    (key: keyof Info, value: string): void => {
+      setCharacterBeingEdited({
+        ...characterBeingEdited,
+        info: { ...characterBeingEdited.info, [key]: value },
+      });
+    },
+    [characterBeingEdited, setCharacterBeingEdited]
+  );
 
-  const updateCharacterText = (key: string, value: string): void => {
-    const copy: Character = { ...character };
-    copy[key] = value;
-    setCharacterBeingEdited(copy);
-  };
+  const updateCharacterAttribute = useCallback(
+    (key: keyof Attributes, value: number): void => {
+      setCharacterBeingEdited({
+        ...characterBeingEdited,
+        attributes: { ...characterBeingEdited.attributes, [key]: value },
+      });
+    },
+    [characterBeingEdited, setCharacterBeingEdited]
+  );
 
-  const updateCharacterAttributes = (key: string, value: number): void => {
-    const copy: Character = { ...character };
-    copy.attributes[key] = value;
-    setCharacterBeingEdited(copy);
-  };
+  const updateCharacterSavingThrows = useCallback(
+    (savingThrow: keyof SavingThrows): void => {
+      const isProficient: boolean =
+        characterBeingEdited.savingThrows[savingThrow] === true;
+      setCharacterBeingEdited({
+        ...characterBeingEdited,
+        savingThrows: {
+          ...characterBeingEdited.savingThrows,
+          [savingThrow]: !isProficient,
+        },
+      });
+    },
+    [characterBeingEdited, setCharacterBeingEdited]
+  );
 
-  const updateCharacterSkills = (skill: Skills, proficient: boolean): void => {
-    const copy: Character = { ...character };
-    if (proficient && !copy.skills.includes(skill)) {
-      copy.skills.push(skill);
-    } else if (!proficient && copy.skills.includes(skill)) {
-      copy.skills.splice(copy.skills.indexOf(skill), 1);
-    }
-    setCharacterBeingEdited(copy);
-  };
+  const updateCharacterSkills = useCallback(
+    (skill: keyof Skills): void => {
+      const isProficient: boolean =
+        characterBeingEdited.skills[skill].isProficient;
+      setCharacterBeingEdited({
+        ...characterBeingEdited,
+        skills: {
+          ...characterBeingEdited.skills,
+          [skill]: {
+            isProficient: !isProficient,
+            relevantAttribute:
+              characterBeingEdited.skills[skill].relevantAttribute,
+          },
+        },
+      });
+    },
+    [characterBeingEdited, setCharacterBeingEdited]
+  );
 
   return (
     <div className={classes.characterSheet}>
-      <CollapsibleContainer header={Headers.BasicInfo}>
+      <CollapsibleContainer header={"Basic Info"}>
         <div className={classes.gridSection}>
-          {Object.values(TextFields).map((textField, index) => {
+          {Object.entries(characterBeingEdited.info).map((map) => {
+            const [key, value] = map;
             return (
               <TextInput
-                key={index}
-                placeholder={textField}
-                value={character[textField.toLowerCase()] as string}
+                key={convertKeyToLabel(key)}
+                placeholder={convertKeyToLabel(key)}
+                value={value}
                 onChange={(event) => {
-                  updateCharacterText(
-                    textField.toLowerCase(),
-                    event.target.value
-                  );
+                  updateCharacterInfo(key as keyof Info, event.target.value);
                 }}
               ></TextInput>
             );
@@ -128,7 +116,7 @@ const CharacterDetailsScreen = (
         </div>
       </CollapsibleContainer>
 
-      <CollapsibleContainer header={Headers.Proficiency}>
+      <CollapsibleContainer header={"Proficiency Bonus"}>
         <div className={classes.containerSection}>
           <div
             style={{
@@ -139,16 +127,16 @@ const CharacterDetailsScreen = (
               fontWeight: "bold",
             }}
           >
-            {`+${character.proficiencyBonus}`}
+            {`+${characterBeingEdited.proficiencyBonus}`}
           </div>
           <input
             ref={sliderRef}
             type="range"
             className={classes.slider}
-            value={character.proficiencyBonus}
+            value={characterBeingEdited.proficiencyBonus}
             onInput={() => {
               setCharacterBeingEdited({
-                ...character,
+                ...characterBeingEdited,
                 proficiencyBonus: sliderRef.current
                   ? +sliderRef.current.value
                   : 0,
@@ -158,51 +146,68 @@ const CharacterDetailsScreen = (
         </div>
       </CollapsibleContainer>
 
-      <CollapsibleContainer header={Headers.Attributes}>
+      <CollapsibleContainer header={"Attributes"}>
         <div className={classes.gridSection}>
-          {Object.values(AttributesLabels).map((label, index) => {
+          {Object.entries(characterBeingEdited.attributes).map((map) => {
+            const [key, value] = map;
             return (
               <AttributeContainer
-                key={index}
-                label={label}
-                initialPointsState={
-                  character.attributes[label.toLowerCase()] as number
-                }
-                updateCharacterAttributes={updateCharacterAttributes}
-                character={characterBeingEdited}
+                key={convertKeyToLabel(key)}
+                label={convertKeyToLabel(key)}
+                points={value}
+                handleDecrement={() => {
+                  updateCharacterAttribute(key as keyof Attributes, value - 1);
+                }}
+                handleIncrement={() => {
+                  updateCharacterAttribute(key as keyof Attributes, value + 1);
+                }}
               />
             );
           })}
         </div>
       </CollapsibleContainer>
 
-      <CollapsibleContainer header={Headers.SavingThrows}>
+      <CollapsibleContainer header={"Saving Throws"}>
         <div className={classes.gridSection}>
-          {Object.values(AttributesLabels).map((attribute, index) => {
+          {Object.entries(characterBeingEdited.savingThrows).map((map) => {
+            const [key, value] = map;
+            const relevantAttributeKey = key as keyof Attributes;
             return (
               <SavingThrowContainer
-                key={index}
-                attribute={attribute}
-                character={character}
-                setCharacterBeingEdited={setCharacterBeingEdited}
+                key={convertKeyToLabel(key)}
+                label={convertKeyToLabel(key)}
+                isProficient={value}
+                proficiencyBonus={characterBeingEdited.proficiencyBonus}
+                relevantAttribute={convertKeyToLabel(relevantAttributeKey)}
+                relevantAttributeModifier={getAttributeModifier(
+                  characterBeingEdited.attributes[relevantAttributeKey]
+                )}
+                handleToggle={() => {
+                  updateCharacterSavingThrows(key as keyof SavingThrows);
+                }}
               />
             );
           })}
         </div>
       </CollapsibleContainer>
 
-      <CollapsibleContainer header={Headers.Skills}>
+      <CollapsibleContainer header={"Skills"}>
         <div className={classes.gridSection}>
-          {skillsAttributesMap.map((data, index) => {
-            const [skill, attribute] = data;
+          {Object.entries(characterBeingEdited.skills).map((map) => {
+            const [key, value] = map;
             return (
               <SkillContainer
-                key={index}
-                skill={skill}
-                attribute={attribute}
-                initialProficientState={character.skills.includes(skill)}
-                updateCharacterSkills={updateCharacterSkills}
-                character={character}
+                key={convertKeyToLabel(key)}
+                label={convertKeyToLabel(key)}
+                isProficient={value.isProficient}
+                proficiencyBonus={characterBeingEdited.proficiencyBonus}
+                relevantAttribute={convertKeyToLabel(value.relevantAttribute)}
+                relevantAttributeModifier={getAttributeModifier(
+                  characterBeingEdited.attributes[value.relevantAttribute]
+                )}
+                handleToggle={() => {
+                  updateCharacterSkills(key as keyof Skills);
+                }}
               />
             );
           })}
