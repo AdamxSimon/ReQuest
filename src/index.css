@@ -13,3 +13,8 @@ body,
 body {
   margin: 0;
 }
+
+input,
+textarea {
+  -webkit-user-select: text;
+}
