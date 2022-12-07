@@ -37,8 +37,7 @@ export const CharactersContext = createContext<CharactersContextState>({
 interface CharactersProviderProps {
   children: JSX.Element;
 }
-
-export const CharactersProvider = ({
+const CharactersProvider = ({
   children,
 }: CharactersProviderProps): JSX.Element => {
   const [characters, setCharacters] = useState<Character[]>(
@@ -108,3 +107,5 @@ export const CharactersProvider = ({
     </CharactersContext.Provider>
   );
 };
+
+export default CharactersProvider;

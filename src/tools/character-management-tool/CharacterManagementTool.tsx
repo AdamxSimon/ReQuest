@@ -5,6 +5,7 @@ import { useCallback, useContext, useState } from "react";
 // Context
 
 import { CharactersContext } from "../../context/CharactersContext";
+import { ScreenSizeContext } from "../../context/ScreenSizeContext";
 
 // Components
 
@@ -24,6 +25,7 @@ import classes from "./styles.module.css";
 const CharacterManagementTool = (): JSX.Element => {
   const { characters, setCharacters, saveCharacter } =
     useContext(CharactersContext);
+  const { isSmallScreen } = useContext(ScreenSizeContext);
 
   const [characterBeingEdited, setCharacterBeingEdited] =
     useState<Character | null>(null);
@@ -97,8 +99,14 @@ const CharacterManagementTool = (): JSX.Element => {
   );
 
   return (
-    <div className={classes.toolContainer}>
-      <CharacterManagementToolbar buttons={toolbarButtons} />
+    <div
+      className={classes.toolContainer}
+      style={{ flexDirection: isSmallScreen ? "column-reverse" : "column" }}
+    >
+      <CharacterManagementToolbar
+        buttons={toolbarButtons}
+        shouldHideSettings={characterBeingEdited !== null}
+      />
       {currentView}
     </div>
   );

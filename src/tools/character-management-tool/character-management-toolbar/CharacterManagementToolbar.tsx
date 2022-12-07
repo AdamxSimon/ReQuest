@@ -1,17 +1,28 @@
-// Styles
+// React
 
 import { useCallback, useContext, useRef } from "react";
+
+// Context
+
 import { CharactersContext } from "../../../context/CharactersContext";
+
+// Assets
+
+import DownArrowPNG from "../../../assets/down-arrow.png";
+
+// Styles
+
 import classes from "./styles.module.css";
 
 interface CharacterManagementToolbarProps {
   buttons: React.ReactElement[];
+  shouldHideSettings: boolean;
 }
 
 const CharacterManagementToolbar = (
   props: CharacterManagementToolbarProps
 ): JSX.Element => {
-  const { buttons } = props;
+  const { buttons, shouldHideSettings } = props;
 
   const { charactersDataRef, uploadCharacterData } =
     useContext(CharactersContext);
@@ -26,39 +37,41 @@ const CharacterManagementToolbar = (
 
   return (
     <div className={classes.toolbar}>
-      <div className={classes.leftButtonsContainer}>
+      <div className={classes.buttonsContainer}>
         {buttons.map((button) => button)}
       </div>
 
-      <div className={classes.settingsContainer}>
-        <a
-          className={classes.settingsButton}
-          href={charactersDataRef}
-          download={"characters.json"}
-        >
-          {"Download"}
-        </a>
+      {!shouldHideSettings && (
+        <div className={classes.settingsContainer}>
+          <img
+            src={DownArrowPNG}
+            alt={"Upload"}
+            height={24}
+            style={{ transform: "rotate(180deg)" }}
+            onClick={handleUpload}
+          />
 
-        <div className={classes.settingsButton} onClick={handleUpload}>
-          {"Upload"}
+          <a href={charactersDataRef} download={"characters.json"}>
+            <img src={DownArrowPNG} alt={"Download"} height={24} />
+          </a>
+
+          <input
+            ref={uploadCharactersRef}
+            style={{ display: "none" }}
+            type={"file"}
+            accept={".json"}
+            onChange={async () => {
+              if (uploadCharactersRef?.current?.files) {
+                const file: File = uploadCharactersRef.current.files[0];
+                const fileText: string = await file.text();
+                const characterData = JSON.parse(fileText);
+                uploadCharacterData(characterData);
+                uploadCharactersRef.current.value = "";
+              }
+            }}
+          />
         </div>
-
-        <input
-          ref={uploadCharactersRef}
-          style={{ display: "none" }}
-          type={"file"}
-          accept={".json"}
-          onChange={async () => {
-            if (uploadCharactersRef?.current?.files) {
-              const file: File = uploadCharactersRef.current.files[0];
-              const fileText: string = await file.text();
-              const characterData = JSON.parse(fileText);
-              uploadCharacterData(characterData);
-              uploadCharactersRef.current.value = "";
-            }
-          }}
-        />
-      </div>
+      )}
     </div>
   );
 };
