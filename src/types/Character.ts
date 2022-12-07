@@ -5,6 +5,7 @@ export class Character {
   attributes: Attributes;
   savingThrows: SavingThrows;
   skills: Skills;
+  notes: string;
   constructor(config: { id: number }) {
     this.id = config.id;
     this.info = {
@@ -54,6 +55,7 @@ export class Character {
       stealth: { isProficient: false, relevantAttribute: "dexterity" },
       survival: { isProficient: false, relevantAttribute: "wisdom" },
     };
+    this.notes = "";
   }
 }
 

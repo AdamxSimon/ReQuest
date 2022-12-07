@@ -60,3 +60,25 @@
   background: black;
   cursor: pointer;
 }
+
+.notes {
+  height: 320px;
+  width: 100%;
+  background-color: lavender;
+  padding: 16px;
+  border: none;
+  border-radius: 4px;
+  resize: none;
+  font-size: 16px;
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.notes::-webkit-scrollbar {
+  display: none;
+}
+
+.notes:focus {
+  outline: none;
+}

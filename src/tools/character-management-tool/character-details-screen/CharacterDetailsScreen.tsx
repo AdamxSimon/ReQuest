@@ -1,6 +1,6 @@
 // React
 
-import { useCallback, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 
 // Components
 
@@ -91,6 +91,16 @@ const CharacterDetailsScreen = (
               characterBeingEdited.skills[skill].relevantAttribute,
           },
         },
+      });
+    },
+    [characterBeingEdited, setCharacterBeingEdited]
+  );
+
+  const updateCharacterNotes = useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+      setCharacterBeingEdited({
+        ...characterBeingEdited,
+        notes: event.target.value,
       });
     },
     [characterBeingEdited, setCharacterBeingEdited]
@@ -211,6 +221,18 @@ const CharacterDetailsScreen = (
               />
             );
           })}
+        </div>
+      </CollapsibleContainer>
+
+      <CollapsibleContainer header={"Notes"}>
+        <div className={classes.containerSection}>
+          <textarea
+            className={classes.notes}
+            cols={0}
+            rows={0}
+            value={characterBeingEdited.notes}
+            onChange={updateCharacterNotes}
+          ></textarea>
         </div>
       </CollapsibleContainer>
     </div>
