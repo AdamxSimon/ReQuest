@@ -1,6 +1,6 @@
 // React
 
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 
 // Context
 
@@ -51,51 +51,59 @@ const CharacterManagementTool = (): JSX.Element => {
     setCharacterBeingEdited,
   ]);
 
-  const toolbarButtons: JSX.Element[] = characterBeingEdited
-    ? [
-        <Button
-          key={"Back"}
-          text={"Back"}
-          onClick={() => setCharacterBeingEdited(null)}
-        />,
-        <Button
-          key={"Delete"}
-          text={"Delete"}
-          onClick={deleteCharacter}
-          isDisabled={
-            !characters.some(
-              (character) => character.id === characterBeingEdited.id
-            )
-          }
-        />,
-        <Button
-          key={"Save"}
-          text={"Save"}
-          onClick={() => {
-            saveCharacter(characterBeingEdited);
-            setCharacterBeingEdited(null);
-          }}
-        />,
-      ]
-    : [
-        <Button
-          key={"New Character"}
-          text={"New Character"}
-          onClick={() => {
-            setCharacterBeingEdited(new Character({ id: Date.now() }));
-          }}
-        />,
-      ];
+  const toolbarButtons: JSX.Element[] = useMemo(
+    () =>
+      characterBeingEdited
+        ? [
+            <Button
+              key={"Back"}
+              text={"Back"}
+              onClick={() => setCharacterBeingEdited(null)}
+            />,
+            <Button
+              key={"Delete"}
+              text={"Delete"}
+              onClick={deleteCharacter}
+              isDisabled={
+                !characters.some(
+                  (character) => character.id === characterBeingEdited.id
+                )
+              }
+            />,
+            <Button
+              key={"Save"}
+              text={"Save"}
+              onClick={() => {
+                saveCharacter(characterBeingEdited);
+                setCharacterBeingEdited(null);
+              }}
+            />,
+          ]
+        : [
+            <Button
+              key={"New Character"}
+              text={"New Character"}
+              onClick={() => {
+                setCharacterBeingEdited(new Character({ id: Date.now() }));
+              }}
+            />,
+          ],
+    [characterBeingEdited, characters, deleteCharacter, saveCharacter]
+  );
 
-  const currentView: JSX.Element = characterBeingEdited ? (
-    <CharacterDetailsScreen
-      characterBeingEdited={characterBeingEdited}
-      setCharacterBeingEdited={setCharacterBeingEdited}
-    />
-  ) : (
-    <CharactersOverviewScreen
-      setCharacterBeingEdited={setCharacterBeingEdited}
-    />
+  const currentView: JSX.Element = useMemo(
+    () =>
+      characterBeingEdited ? (
+        <CharacterDetailsScreen
+          characterBeingEdited={characterBeingEdited}
+          setCharacterBeingEdited={setCharacterBeingEdited}
+        />
+      ) : (
+        <CharactersOverviewScreen
+          setCharacterBeingEdited={setCharacterBeingEdited}
+        />
+      ),
+    [characterBeingEdited]
   );
 
   return (

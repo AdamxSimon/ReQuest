@@ -18,9 +18,9 @@ interface CollapsibleContainerProps {
 const CollapsibleContainer = (
   props: CollapsibleContainerProps
 ): JSX.Element => {
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-
   const { header, children } = props;
+
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
   return (
     <div className={classes.collapsibleContainer}>

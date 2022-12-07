@@ -5,11 +5,14 @@ import { useContext } from "react";
 // Context
 
 import { CharactersContext } from "../../../context/CharactersContext";
-import { Character } from "../../../types/Character";
 
-// Custom Components
+// Components
 
 import CharacterCard from "./character-card/CharacterCard";
+
+// Types
+
+import { Character } from "../../../types/Character";
 
 // Styles
 
@@ -25,11 +28,12 @@ const CharactersOverviewScreen = (
   props: CharactersOverviewScreenProps
 ): JSX.Element => {
   const { setCharacterBeingEdited } = props;
+
   const { characters } = useContext(CharactersContext);
 
   return (
     <div className={classes.cardContainer}>
-      {characters?.map((character, index) => {
+      {characters.map((character, index) => {
         return (
           <CharacterCard
             key={index}

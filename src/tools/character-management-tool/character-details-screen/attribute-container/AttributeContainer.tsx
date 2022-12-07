@@ -1,8 +1,8 @@
 // React
 
-import { useCallback, useState } from "react";
+import { useMemo } from "react";
 
-// Custom Components
+// Components
 
 import PointsButton, {
   AdjustmentActions,
@@ -25,7 +25,9 @@ interface AttributeContainerProps {
 const AttributeContainer = (props: AttributeContainerProps): JSX.Element => {
   const { label, points, handleDecrement, handleIncrement } = props;
 
-  const modifier: number = getAttributeModifier(points);
+  const modifier: number = useMemo(() => {
+    return getAttributeModifier(points);
+  }, [points]);
 
   return (
     <div className={classes.attributesContainer}>

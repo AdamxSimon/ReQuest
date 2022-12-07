@@ -20,14 +20,15 @@
   width: 100%;
   padding: 16px 0;
   border-bottom: 1px solid black;
+  text-align: center;
   font-size: 24px;
   font-weight: bold;
-  text-align: center;
 }
 
 .gridSection {
   width: 100%;
-  padding: 16px 0;
+  padding-top: 16px;
+  padding-bottom: 8px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -36,7 +37,8 @@
 
 .containerSection {
   width: 100%;
-  padding: 16px 0;
+  padding-top: 16px;
+  padding-bottom: 8px;
 }
 
 .slider {
@@ -46,11 +48,11 @@
 }
 
 .slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
   height: 25px;
   width: 25px;
   background: black;
+  -webkit-appearance: none;
+  appearance: none;
   cursor: pointer;
 }
 
