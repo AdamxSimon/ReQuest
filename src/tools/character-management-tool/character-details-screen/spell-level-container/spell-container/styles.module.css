@@ -1,0 +1,28 @@
+.spell {
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  gap: 4px;
+}
+
+.preparedSelector {
+  height: 16px;
+  width: 16px;
+  border: 1px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.name {
+  border-bottom: 1px solid black;
+  flex: 1;
+}
+
+.optionsContainer {
+  display: flex;
+  gap: 4px;
+}
+
+.optionsContainer > img {
+  cursor: pointer;
+}

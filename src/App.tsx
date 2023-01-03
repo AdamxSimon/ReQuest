@@ -6,6 +6,10 @@ import { useContext } from "react";
 
 import { ScreenSizeContext } from "./context/ScreenSizeContext";
 
+// Overlays
+
+import ModalOverlay from "./overlays/modal-overlay/ModalOverlay";
+
 // Components
 
 import CharacterManagementTool from "./tools/character-management-tool/CharacterManagementTool";
@@ -21,18 +25,23 @@ import classes from "./styles.module.css";
 const App = (): JSX.Element => {
   const { isScreenUnsupported } = useContext(ScreenSizeContext);
 
-  return (
-    <div className={classes.app}>
-      {isScreenUnsupported ? (
+  if (isScreenUnsupported) {
+    return (
+      <div className={classes.unsupportedContainer}>
         <img
           src={SwordsPNG}
           alt={"Unsupported"}
           className={classes.unsupportedImage}
           height={48}
         />
-      ) : (
-        <CharacterManagementTool />
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className={classes.app}>
+      <CharacterManagementTool />
+      <ModalOverlay />
     </div>
   );
 };

@@ -1,0 +1,43 @@
+.spellDetailsModal {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.spellFieldsOverflow {
+  flex: 1;
+  position: relative;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.spellFields {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.spellFieldsOverflow::-webkit-scrollbar {
+  display: none;
+}
+
+.descriptionInput {
+  height: 240px;
+  width: 100%;
+  resize: none;
+}
+
+.buttonsContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}

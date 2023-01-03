@@ -1,0 +1,35 @@
+.modalBackdrop {
+  background-color: black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.2;
+  z-index: 2;
+}
+
+.modalContainer {
+  padding: 24px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+
+.modal {
+  max-height: 100%;
+  max-width: 100%;
+  background-color: white;
+  z-index: 4;
+}
+
+.modal > div {
+  max-height: 100%;
+  max-width: 100%;
+}
