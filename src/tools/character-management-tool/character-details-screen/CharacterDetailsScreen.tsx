@@ -8,11 +8,17 @@ import AttributeContainer from "./attribute-container/AttributeContainer";
 import CollapsibleContainer from "./collapsible-container/CollapsibleContainer";
 import SavingThrowContainer from "./saving-throw-container/SavingThrowContainer";
 import SkillContainer from "./skill-container/SkillContainer";
-import TextInput from "../../../components/text-input/TextInput";
+import SpellLevelContainer from "./spell-level-container/SpellLevelContainer";
+import LabeledInput from "../../../components/labeled-input/LabeledInput";
 
 // Utils
 
 import { convertKeyToLabel, getAttributeModifier } from "../../../utils";
+
+// Assets
+
+import PlusPNG from "../../../assets/plus.png";
+import MinusPNG from "../../../assets/minus.png";
 
 // Types
 
@@ -21,6 +27,7 @@ import {
   Character,
   Info,
   SavingThrows,
+  Spell,
 } from "../../../types/Character";
 import { Skills } from "../../../types/Character";
 
@@ -96,6 +103,99 @@ const CharacterDetailsScreen = (
     [characterBeingEdited, setCharacterBeingEdited]
   );
 
+  const updateSlotsLeft = useCallback(
+    (level: number, value: string) => {
+      if (typeof Number(value) === "number") {
+        const characterBeingEditedCopy = { ...characterBeingEdited };
+        characterBeingEditedCopy.spellLevels[level].slotsLeft = +value;
+        setCharacterBeingEdited(characterBeingEditedCopy);
+      }
+    },
+    [characterBeingEdited, setCharacterBeingEdited]
+  );
+
+  const updateSlotsTotal = useCallback(
+    (level: number, value: string) => {
+      if (typeof Number(value) === "number") {
+        const characterBeingEditedCopy = { ...characterBeingEdited };
+        characterBeingEditedCopy.spellLevels[level].slotsTotal = +value;
+        setCharacterBeingEdited(characterBeingEditedCopy);
+      }
+    },
+    [characterBeingEdited, setCharacterBeingEdited]
+  );
+
+  const removeSpellLevel = useCallback((): void => {
+    if (characterBeingEdited.spellLevels.length > 1) {
+      setCharacterBeingEdited({
+        ...characterBeingEdited,
+        spellLevels: characterBeingEdited.spellLevels.slice(0, -1),
+      });
+    }
+  }, [characterBeingEdited, setCharacterBeingEdited]);
+
+  const addSpellLevel = useCallback((): void => {
+    setCharacterBeingEdited({
+      ...characterBeingEdited,
+      spellLevels: [
+        ...characterBeingEdited.spellLevels,
+        { spells: [], slotsLeft: 0, slotsTotal: 0 },
+      ],
+    });
+  }, [characterBeingEdited, setCharacterBeingEdited]);
+
+  const removeSpell = useCallback(
+    (spell: Spell, level: number): void => {
+      const characterBeingEditedCopy: Character = { ...characterBeingEdited };
+      characterBeingEditedCopy.spellLevels[level].spells = [
+        ...characterBeingEdited.spellLevels[level].spells.filter(
+          (data) => data.id !== spell.id
+        ),
+      ];
+      setCharacterBeingEdited(characterBeingEditedCopy);
+    },
+    [characterBeingEdited, setCharacterBeingEdited]
+  );
+
+  const addSpell = useCallback(
+    (spell: Spell, level: number): void => {
+      setCharacterBeingEdited({
+        ...characterBeingEdited,
+        spellLevels: [
+          ...characterBeingEdited.spellLevels.slice(0, level),
+          {
+            ...characterBeingEdited.spellLevels[level],
+            spells: [...characterBeingEdited.spellLevels[level].spells, spell],
+          },
+          ...characterBeingEdited.spellLevels.slice(level + 1),
+        ],
+      });
+    },
+    [characterBeingEdited, setCharacterBeingEdited]
+  );
+
+  const editSpell = useCallback(
+    (spell: Spell, level: number, index: number): void => {
+      const characterBeingEditedCopy: Character = { ...characterBeingEdited };
+      characterBeingEditedCopy.spellLevels[level].spells[index] = spell;
+      setCharacterBeingEdited(characterBeingEditedCopy);
+    },
+    [characterBeingEdited, setCharacterBeingEdited]
+  );
+
+  const toggleSpell = useCallback(
+    (level: number, index: number): void => {
+      const characterBeingEditedCopy: Character = { ...characterBeingEdited };
+      characterBeingEditedCopy.spellLevels[level].spells[index] = {
+        ...characterBeingEditedCopy.spellLevels[level].spells[index],
+        isPrepared:
+          !characterBeingEdited.spellLevels[level].spells[index].isPrepared,
+      };
+      setCharacterBeingEdited(characterBeingEditedCopy);
+    },
+    [characterBeingEdited, setCharacterBeingEdited]
+  );
+
   const updateCharacterNotes = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
       setCharacterBeingEdited({
@@ -113,14 +213,14 @@ const CharacterDetailsScreen = (
           {Object.entries(characterBeingEdited.info).map((map) => {
             const [key, value] = map;
             return (
-              <TextInput
+              <LabeledInput
                 key={convertKeyToLabel(key)}
-                placeholder={convertKeyToLabel(key)}
+                label={convertKeyToLabel(key)}
                 value={value}
                 onChange={(event) => {
                   updateCharacterInfo(key as keyof Info, event.target.value);
                 }}
-              ></TextInput>
+              ></LabeledInput>
             );
           })}
         </div>
@@ -221,6 +321,45 @@ const CharacterDetailsScreen = (
               />
             );
           })}
+        </div>
+      </CollapsibleContainer>
+
+      <CollapsibleContainer header={"Spells"}>
+        <div
+          className={classes.containerSection}
+          style={{ display: "flex", flexDirection: "column", gap: 16 }}
+        >
+          <div className={classes.spellLevelsAdjustmentContainer}>
+            <img
+              src={MinusPNG}
+              alt={"Remove Spell Level"}
+              height={16}
+              onClick={removeSpellLevel}
+            />
+            <img
+              src={PlusPNG}
+              alt={"Add Spell Level"}
+              height={16}
+              onClick={addSpellLevel}
+            />
+          </div>
+          <div className={classes.spellLevelsContainer}>
+            {characterBeingEdited.spellLevels.map((spellLevel, index) => {
+              return (
+                <SpellLevelContainer
+                  key={index}
+                  spellLevel={index}
+                  spellLevelProps={spellLevel}
+                  handleUpdateSlotsLeft={updateSlotsLeft}
+                  handleUpdateSlotsTotal={updateSlotsTotal}
+                  handleRemoveSpell={removeSpell}
+                  handleAddSpell={addSpell}
+                  handleEditSpell={editSpell}
+                  handleToggleSpell={toggleSpell}
+                />
+              );
+            })}
+          </div>
         </div>
       </CollapsibleContainer>
 

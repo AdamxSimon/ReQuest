@@ -5,6 +5,7 @@ export class Character {
   attributes: Attributes;
   savingThrows: SavingThrows;
   skills: Skills;
+  spellLevels: SpellLevelProps[];
   notes: string;
   constructor(config: { id: number }) {
     this.id = config.id;
@@ -55,6 +56,7 @@ export class Character {
       stealth: { isProficient: false, relevantAttribute: "dexterity" },
       survival: { isProficient: false, relevantAttribute: "wisdom" },
     };
+    this.spellLevels = [{ spells: [] }];
     this.notes = "";
   }
 }
@@ -117,3 +119,119 @@ export type Skills = {
     relevantAttribute: AttributeKeys;
   };
 };
+
+export interface SpellLevelProps {
+  slotsTotal?: number;
+  slotsLeft?: number;
+  spells: Spell[];
+}
+
+enum Components {
+  Verbal = "V",
+  Somatic = "S",
+  Material = "M",
+}
+
+enum AreaType {
+  Sphere = "sphere",
+  Cone = "cone",
+  Cylinder = "cylinder",
+  Line = "line",
+}
+
+export class Spell {
+  id?: number;
+  isPrepared?: boolean;
+  index: string;
+  name: string;
+  url: string;
+  desc: string[];
+  higher_level: string[];
+  range: string;
+  components: Components[] | string;
+  material: string;
+  area_of_effect: {
+    size: number;
+    type: AreaType | string;
+  };
+  ritual: boolean;
+  duration: string;
+  concentration: boolean | string;
+  casting_time: string;
+  level: number;
+  attack_type: string;
+  damage?: {
+    custom_damage?: string;
+    damage_at_slot_level?: Record<string, string>;
+    damage_at_character_level?: Record<string, string>;
+    damage_type?: {
+      index?: string;
+      name?: string;
+      url?: string;
+    };
+  };
+  school: {
+    index: string;
+    name: string;
+    url: string;
+  };
+  classes: {
+    index: string;
+    name: string;
+    url: string;
+  }[];
+  subclasses: {
+    index: string;
+    name: string;
+    url: string;
+  }[];
+  constructor(config?: Partial<Spell>) {
+    this.id = config?.id || Date.now();
+    this.isPrepared = config?.isPrepared || false;
+    this.index = config?.index || "";
+    this.name = config?.name || "";
+    this.url = config?.url || "";
+    this.desc = config?.desc || [];
+    this.higher_level = config?.higher_level || [];
+    this.range = config?.range || "";
+    this.components = config?.components || [];
+    this.material = config?.material || "";
+    this.area_of_effect = config?.area_of_effect || {
+      size: 0,
+      type: "",
+    };
+    this.ritual = config?.ritual || false;
+    this.duration = config?.duration || "";
+    this.concentration = config?.concentration || "";
+    this.casting_time = config?.casting_time || "";
+    this.level = config?.level || 0;
+    this.attack_type = config?.attack_type || "";
+    this.damage = config?.damage || {
+      custom_damage: "",
+      damage_type: {
+        index: "",
+        name: "",
+        url: "",
+      },
+    };
+    this.school = config?.school || {
+      index: "",
+      name: "",
+      url: "",
+    };
+    this.classes = config?.classes || [
+      {
+        index: "",
+        name: "",
+        url: "",
+      },
+    ];
+    this.subclasses = config?.subclasses || [
+      {
+        index: "",
+        name: "",
+        url: "",
+      },
+    ];
+  }
+}
