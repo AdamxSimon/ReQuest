@@ -140,7 +140,6 @@ enum AreaType {
 }
 
 export class Spell {
-  id?: number;
   isPrepared?: boolean;
   index: string;
   name: string;
@@ -186,7 +185,6 @@ export class Spell {
     url: string;
   }[];
   constructor(config?: Partial<Spell>) {
-    this.id = config?.id || Date.now();
     this.isPrepared = config?.isPrepared || false;
     this.index = config?.index || "";
     this.name = config?.name || "";

@@ -149,7 +149,7 @@ const CharacterDetailsScreen = (
       const characterBeingEditedCopy: Character = { ...characterBeingEdited };
       characterBeingEditedCopy.spellLevels[level].spells = [
         ...characterBeingEdited.spellLevels[level].spells.filter(
-          (data) => data.id !== spell.id
+          (data) => data.name !== spell.name
         ),
       ];
       setCharacterBeingEdited(characterBeingEditedCopy);
@@ -159,17 +159,26 @@ const CharacterDetailsScreen = (
 
   const addSpell = useCallback(
     (spell: Spell, level: number): void => {
-      setCharacterBeingEdited({
-        ...characterBeingEdited,
-        spellLevels: [
-          ...characterBeingEdited.spellLevels.slice(0, level),
-          {
-            ...characterBeingEdited.spellLevels[level],
-            spells: [...characterBeingEdited.spellLevels[level].spells, spell],
-          },
-          ...characterBeingEdited.spellLevels.slice(level + 1),
-        ],
-      });
+      if (
+        !characterBeingEdited.spellLevels[level].spells.find(
+          (data) => data.name === spell.name
+        )
+      ) {
+        setCharacterBeingEdited({
+          ...characterBeingEdited,
+          spellLevels: [
+            ...characterBeingEdited.spellLevels.slice(0, level),
+            {
+              ...characterBeingEdited.spellLevels[level],
+              spells: [
+                ...characterBeingEdited.spellLevels[level].spells,
+                spell,
+              ],
+            },
+            ...characterBeingEdited.spellLevels.slice(level + 1),
+          ],
+        });
+      }
     },
     [characterBeingEdited, setCharacterBeingEdited]
   );
