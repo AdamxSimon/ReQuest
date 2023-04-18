@@ -87,7 +87,7 @@ const SpellLevelContainer = (props: SpellLevelContainerProps): JSX.Element => {
         {spellLevelProps.spells.map((spell, index) => {
           return (
             <SpellContainer
-              key={spell.id}
+              key={spell.name}
               spell={spell}
               spellLevel={spellLevel}
               index={index}
