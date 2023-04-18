@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/ReQuest/static/css/main.91752408.css",
-    "main.js": "/ReQuest/static/js/main.e479f0f1.js",
+    "main.css": "/ReQuest/static/css/main.06582656.css",
+    "main.js": "/ReQuest/static/js/main.48c565b6.js",
     "static/media/dropdown-arrow.png": "/ReQuest/static/media/dropdown-arrow.865b2c7ad0bd6f2160de.png",
     "index.html": "/ReQuest/index.html",
-    "main.91752408.css.map": "/ReQuest/static/css/main.91752408.css.map",
-    "main.e479f0f1.js.map": "/ReQuest/static/js/main.e479f0f1.js.map"
+    "main.06582656.css.map": "/ReQuest/static/css/main.06582656.css.map",
+    "main.48c565b6.js.map": "/ReQuest/static/js/main.48c565b6.js.map"
   },
   "entrypoints": [
-    "static/css/main.91752408.css",
-    "static/js/main.e479f0f1.js"
+    "static/css/main.06582656.css",
+    "static/js/main.48c565b6.js"
   ]
 }
