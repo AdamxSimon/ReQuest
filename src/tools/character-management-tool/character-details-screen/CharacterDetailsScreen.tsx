@@ -146,13 +146,21 @@ const CharacterDetailsScreen = (
 
   const removeSpell = useCallback(
     (spell: Spell, level: number): void => {
-      const characterBeingEditedCopy: Character = { ...characterBeingEdited };
-      characterBeingEditedCopy.spellLevels[level].spells = [
-        ...characterBeingEdited.spellLevels[level].spells.filter(
-          (data) => data.name !== spell.name
-        ),
-      ];
-      setCharacterBeingEdited(characterBeingEditedCopy);
+      setCharacterBeingEdited({
+        ...characterBeingEdited,
+        spellLevels: [
+          ...characterBeingEdited.spellLevels.slice(0, level),
+          {
+            ...characterBeingEdited.spellLevels[level],
+            spells: [
+              ...characterBeingEdited.spellLevels[level].spells.filter(
+                (data) => data.name !== spell.name
+              ),
+            ],
+          },
+          ...characterBeingEdited.spellLevels.slice(level + 1),
+        ],
+      });
     },
     [characterBeingEdited, setCharacterBeingEdited]
   );
